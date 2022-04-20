@@ -37,6 +37,10 @@ one_of_simp([L]) :=  (
 
 simplifying(one_of, one_of_simp);
 
+/*Return true iff q^n = e and carg(q) in interval (-pi/n, pi/n] */
+test_root(q,n,e) := block([θ : carg(q)],
+  equal(q^n,e) and -%pi/n < θ and θ <= %pi/n);
+
 /* Using gfactor instead of factor to precondition solve is important for some 
    complex number cases; for example, denesting sqrt(70*sqrt(3)*%i+122). When 
    they exist, the function solve doesn't always return them. Maybe the setting
@@ -54,12 +58,11 @@ denest_helper(e,n) := block([eq, g : gensym(),sol],
 	   Also, remove redundant solutions. */
 	sol : map(lambda([solk], subst(solk,g)), unique(sol)),
 	
-	/* Remove solutions that are not complex numbers or surds */
-	sol : sublist(sol, lambda([q], complex_number_p(q) or surd_p(e))),
+	/* Remove solutions that are not complex numbers or surds 
+	sol : sublist(sol, lambda([q], complex_number_p(q) or surd_p(e))), */
 
 	/* Filter the nonprincipal branch solutions */
-	sol : sublist(sol, lambda([q], block([θ : carg(q)], 
-	                  equal(q^n,e) and -%pi/n < θ and θ <= %pi/n))),
+	sol : sublist(sol,lambda([s], test_root(q,n,s))),
 	     
 	/* When no solutions are found, push e^(1/n) onto the sol. */
 	if emptyp(sol) then push(e^(1/n), sol),
@@ -67,8 +70,9 @@ denest_helper(e,n) := block([eq, g : gensym(),sol],
 	/* Sort sol according to the sorting predicate ?complexity, and either
 	   return the first list member or for a multivalued case, return a one_of
 	   object. The function ?complexity is suboptimal? */
-	 sol : sort(sol, ?complexity),
- 	 first(sol))$ /* could be apply('one_of, sol) */
+    print(sol),
+	 /*sol : sort(sol, ?complexity),*/
+ 	 apply('one_of, sol))$
 	
 
 /* Return true iff e is a sum of complex rational numbers and terms of the form
