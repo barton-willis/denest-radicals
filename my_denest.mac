@@ -62,7 +62,7 @@ denest_helper(e,n) := block([eq, g : gensym(),sol],
 	sol : sublist(sol, lambda([q], complex_number_p(q) or surd_p(e))), */
 
 	/* Filter the nonprincipal branch solutions */
-	sol : sublist(sol,lambda([s], test_root(q,n,s))),
+	sol : sublist(sol,lambda([s], test_root(s,n,e))),
 	     
 	/* When no solutions are found, push e^(1/n) onto the sol. */
 	if emptyp(sol) then push(e^(1/n), sol),
