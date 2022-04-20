@@ -1,0 +1,84 @@
+/* Maxima code for denesting some radicals
+   
+   Copyright 2022, Barton Willis
+
+   This program is free software: you can redistribute it and/or modify it under the 
+   terms of the GNU General Public License as published by the Free Software Foundation, 
+   either version 3 of the License, or (at your option) any later version. This 
+   program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
+   You should have received a copy of the GNU General Public License along with this 
+   program. If not, see <https://www.gnu.org/licenses/>. 
+*/   
+
+/* Predicates for identifying +, *, and ^ expressions. */
+
+mplusp(e) := not mapatom(e) and inpart(e,0) = "+";
+
+mtimesp(e) := not mapatom(e) and inpart(e,0) = "*";
+
+mexptp(e) := not mapatom(e) and inpart(e,0) = "^";
+
+map('load,['simplifying, 'to_poly_solve]);
+
+/* Define a simplifying nary function one_of. In addition to the nary 
+   simplifications, do:
+
+      one_of(X) -> X  
+      one_of(X1, X2, ... Xn) --> one_of(Y1, Y2, ..., Ym)
+
+   where [Y1, Y2, ..., Ym] = unique([X1, X2, ... Xn]). */
+
+declare(one_of, nary);   
+one_of_simp([L]) :=  (
+	L : unique(L),
+	if length(L)=1 then first(L) else simpfunmake('one_of, L));
+
+simplifying(one_of, one_of_simp);
+
+/* Using gfactor instead of factor to precondition solve is important for some 
+   complex number cases; for example, denesting sqrt(70*sqrt(3)*%i+122). When 
+   they exist, the function solve doesn't always return them. Maybe the setting
+   of solvedecomposes matters? */
+
+denest_helper(e,n) := block([eq, g : gensym(),sol],
+    /* eq = minimal polynomial for e - g^n; thus e^(1/n) = g. */
+	eq : first(to_poly(e - g^n,[g,1])),        
+	eq : first(elim_allbut(eq, g)),
+	/* Solve eq for g. We hope that solve returns non-nested radicals when possible. */
+	sol : block([algexact : true, solvefactors : true, solveexplicit : true], 
+	  	solve(gfactor(eq), g)),
+	
+	/* Build the list of solutions [aaa,bbb, ...] instead of [g = aaa, g = bbb, ...]. 
+	   Also, remove redundant solutions. */
+	sol : map(lambda([solk], subst(solk,g)), unique(sol)),
+	
+	/* Remove solutions that are not complex numbers or surds */
+	sol : sublist(sol, lambda([q], complex_number_p(q) or surd_p(e))),
+
+	/* Filter the nonprincipal branch solutions */
+	sol : sublist(sol, lambda([q], block([θ : carg(q)], 
+	                  equal(q^n,e) and -%pi/n < θ and θ <= %pi/n))),
+	     
+	/* When no solutions are found, push e^(1/n) onto the sol. */
+	if emptyp(sol) then push(e^(1/n), sol),
+
+	/* Sort sol according to the sorting predicate ?complexity, and either
+	   return the first list member or for a multivalued case, return a one_of
+	   object. The function ?complexity is suboptimal? */
+	 sol : sort(sol, ?complexity),
+ 	 first(sol))$ /* could be apply('one_of, sol) */
+	
+
+/* Return true iff e is a sum of complex rational numbers and terms of the form
+   n^(p/q) */
+surd_p(e):=block([inflag:true],
+    xreduce("or",
+    [complex_number_p(e) and ratnump(realpart(e)) and ratnump(imagpart(e)),
+     (mexptp(e) and integerp(first(e)) and ratnump(second(e)) and 
+	  not integerp(second(e))),
+     ((mplusp(e) or mtimesp(e)) and every('surd_p,args(e)))]));
+
+denest_single_radical(e) := block([opsubst : true, inflag : true],
+    subst("^" = lambda([a,b], if mplusp(a) and surd_p(a) and ratnump(b) then denest_helper(a,denom(b))^num(b) else a^b), e)); 
+
+denest(e) := scanmap(lambda([q], ratsimp(denest_single_radical(q))), e, 'bottomup);
