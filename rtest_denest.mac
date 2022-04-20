@@ -1,0 +1,13 @@
+(load("mydenest.mac"),0);
+0$
+
+/* examples from https://math.stackexchange.com/questions/196155/strategies-to-denest-nested-radicals-sqrtab-sqrtc */
+
+denest(sqrt(3-2*sqrt(2)));
+sqrt(2)-1$
+
+denest(sqrt(61-24*sqrt(5)));
+3*sqrt(5)-4$
+
+
+
