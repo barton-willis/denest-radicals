@@ -39,6 +39,7 @@ simplifying(one_of, one_of_simp);
 
 /*Return true iff q^n = e and carg(q) in interval (-pi/n, pi/n] */
 test_root(q,n,e) := block([θ : carg(q)],
+  /* print([q,e,is(equal(q^n,e)), is(equal(rootscontract(expand(q^n)),e))]),*/
   equal(q^n,e) and -%pi/n < θ and θ <= %pi/n);
 
 /* Using gfactor instead of factor to precondition solve is important for some 
