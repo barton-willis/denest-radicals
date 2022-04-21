@@ -1,4 +1,4 @@
-(load("mydenest.mac"),0);
+(load("my_denest.mac"),0);
 0$
 
 /* examples from https://math.stackexchange.com/questions/196155/strategies-to-denest-nested-radicals-sqrtab-sqrtc */

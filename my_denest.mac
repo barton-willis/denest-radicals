@@ -37,9 +37,8 @@ one_of_simp([L]) :=  (
 
 simplifying(one_of, one_of_simp);
 
-/*Return true iff q^n = e and carg(q) in interval (-pi/n, pi/n] */
+/* Return true iff q^n = e and carg(q) in interval (-pi/n, pi/n] */
 test_root(q,n,e) := block([θ : carg(q)],
-  /* print([q,e,is(equal(q^n,e)), is(equal(rootscontract(expand(q^n)),e))]),*/
   equal(q^n,e) and -%pi/n < θ and θ <= %pi/n);
 
 /* Using gfactor instead of factor to precondition solve is important for some 
@@ -71,8 +70,7 @@ denest_helper(e,n) := block([eq, g : gensym(),sol],
 	/* Sort sol according to the sorting predicate ?complexity, and either
 	   return the first list member or for a multivalued case, return a one_of
 	   object. The function ?complexity is suboptimal? */
-    print(sol),
-	 /*sol : sort(sol, ?complexity),*/
+    /*sol : sort(sol, ?complexity),*/
  	 apply('one_of, sol))$
 	
 
