@@ -37,9 +37,13 @@ one_of_simp([L]) :=  (
 
 simplifying(one_of, one_of_simp);
 
-/* Return true iff q^n = e and carg(q) in interval (-pi/n, pi/n] */
+/* Return true iff q^n = e and carg(q) in interval (-%pi/n, %pi/n] 
+   Especially for complex cases, this test sometimes needlessly fails.
+   Could allow floating point evaluation... Also does carg always
+   return *the* principal argument?   */
 test_root(q,n,e) := block([θ : carg(q)],
-  equal(q^n,e) and -%pi/n < θ and θ <= %pi/n);
+  print([n,q,θ,float(θ), is(equal(expand(q^n),e)),  is(-%pi/n < θ),  is(θ <= %pi/n) ]),
+  is(equal(expand(q^n),e)) and (-%pi/n < θ) and (θ <= %pi/n));
 
 /* Using gfactor instead of factor to precondition solve is important for some 
    complex number cases; for example, denesting sqrt(70*sqrt(3)*%i+122). When 
@@ -60,10 +64,10 @@ denest_helper(e,n) := block([eq, g : gensym(),sol],
 	
 	/* Remove solutions that are not complex numbers or surds 
 	sol : sublist(sol, lambda([q], complex_number_p(q) or surd_p(e))), */
-
+   
 	/* Filter the nonprincipal branch solutions */
 	sol : sublist(sol,lambda([s], test_root(s,n,e))),
-	     
+	
 	/* When no solutions are found, push e^(1/n) onto the sol. */
 	if emptyp(sol) then push(e^(1/n), sol),
 
@@ -75,7 +79,7 @@ denest_helper(e,n) := block([eq, g : gensym(),sol],
 	
 
 /* Return true iff e is a sum of complex rational numbers and terms of the form
-   n^(p/q) */
+   n^(p/q). Opps--this function allows nested radicals to pass ? */
 surd_p(e):=block([inflag:true],
     xreduce("or",
     [complex_number_p(e) and ratnump(realpart(e)) and ratnump(imagpart(e)),
