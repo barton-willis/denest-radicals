@@ -38,7 +38,7 @@ one_of_simp([L]) :=  (
 simplifying(one_of, one_of_simp);
 
 /* If q^n = e, that is if q is an nth root of e, return
-   q*exp(2iπk/n), where k is an interger that makes 
+   q*exp(2iπk/n), where k is an integer that makes 
    arg(q*exp(2iπk/n)) a member of (-π/n,π]. If the test 
    q^n = e fails, return false.*/
 
@@ -68,7 +68,7 @@ denest_helper(e,n) := block([eq, g : gensym(),sol],
 	/* Remove solutions that are not complex numbers or surds 
 	sol : sublist(sol, lambda([q], complex_number_p(q) or surd_p(e))), */
    
-	/* Convert non-supurious roots to the principal root. Spurious roots
+	/* Convert non-spurious roots to the principal root. Spurious roots
       are converted to false, so delete false from the result of mapping. */
    sol : map(lambda([s], principalize_root(s,n,e)), sol),
    sol : delete(false, sol),
