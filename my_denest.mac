@@ -37,13 +37,16 @@ one_of_simp([L]) :=  (
 
 simplifying(one_of, one_of_simp);
 
-/* Return true iff q^n = e and carg(q) in interval (-%pi/n, %pi/n] 
-   Especially for complex cases, this test sometimes needlessly fails.
-   Could allow floating point evaluation... Also does carg always
-   return *the* principal argument?   */
-test_root(q,n,e) := block([θ : carg(q)],
-  print([n,q,θ,float(θ), is(equal(expand(q^n),e)),  is(-%pi/n < θ),  is(θ <= %pi/n) ]),
-  is(equal(expand(q^n),e)) and (-%pi/n < θ) and (θ <= %pi/n));
+/* If q^n = e, that is if q is an nth root of e, return
+   q*exp(2iπk/n), where k is an interger that makes 
+   arg(q*exp(2iπk/n)) a member of (-π/n,π]. If the test 
+   q^n = e fails, return false.*/
+
+  principalize_root(q,n,e) := block([k],
+   if is(equal(expand(q^n),e)) then (
+      k : -floor(1/2 + n*carg(q)/(2*%pi)),
+      expand(rectform(exp(2*%pi*%i*k/n))*q))
+   else false);   
 
 /* Using gfactor instead of factor to precondition solve is important for some 
    complex number cases; for example, denesting sqrt(70*sqrt(3)*%i+122). When 
@@ -65,9 +68,11 @@ denest_helper(e,n) := block([eq, g : gensym(),sol],
 	/* Remove solutions that are not complex numbers or surds 
 	sol : sublist(sol, lambda([q], complex_number_p(q) or surd_p(e))), */
    
-	/* Filter the nonprincipal branch solutions */
-	sol : sublist(sol,lambda([s], test_root(s,n,e))),
-	
+	/* Convert non-supurious roots to the principal root. Spurious roots
+      are converted to false, so delete false from the result of mapping. */
+   sol : map(lambda([s], principalize_root(s,n,e)), sol),
+   sol : delete(false, sol),
+		
 	/* When no solutions are found, push e^(1/n) onto the sol. */
 	if emptyp(sol) then push(e^(1/n), sol),
 
