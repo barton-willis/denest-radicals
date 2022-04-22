@@ -1,4 +1,4 @@
-# denest-radicals
+# denest radicals
  Maxima CAS code for denesting radicals. 
  
  For a constant expression involving nested rational powers, this code attempts to find a un-nested representation. Unlike Maxima's `sqrtdenest` function that handles nested square roots, this function attempts to denest more general expressions, incliuding expressions involving cube roots; for example
