@@ -13,6 +13,12 @@ map('surd_p,[99 *(3 + sqrt(8)) ]);
 map('surd_p, [sqrt(3), %i*sqrt(7), 1-sqrt(3/4), %i-sqrt(107)]);
 [true,true,true,true]$
 
+map('surd_p, [23*(%i + 2/3), 99*(1+%i)*(3+%i), (1-sqrt(3/4))*(%i*sqrt(7)) ]);
+[true, true,true]$
+
+map('surd_p, [sqrt(3+%i)]);
+[true]$
+
 /* We'll check check that denest(p) is a surd, denest(p) = q, and that 
    float(p) = float(denest(p))  */
 

@@ -66,13 +66,16 @@ denest_helper(e,n) := block([eq, g : gensym(),sol],
       predicate for sorting? */
     first(sort(sol, lambda([a,b], ?complexity(a) < ?complexity(b)))));
 
+complex_rational_p(e) :=
+  complex_number_p(e) and ratnump(realpart(e)) and ratnump(imagpart(e));
+  
 /* Return true iff e is a sum of complex rational numbers and terms of the form
    n^(p/q). Oops--this function allows nested radicals to pass ? */
 surd_p(e):=block([inflag:true],
     xreduce("or",
-    [complex_number_p(e) and ratnump(realpart(e)) and ratnump(imagpart(e)),
-     (mexptp(e) and integerp(first(e)) and ratnump(second(e)) and 
-	  not integerp(second(e))),
+    [complex_rational_p(e),
+     (mexptp(e) and complex_rational_p(first(e)) and ratnump(second(e)) and 
+	       not integerp(second(e))),
      ((mplusp(e) or mtimesp(e)) and every('surd_p,args(e)))]));
 
 denest_single_radical(e) := block([opsubst : true, inflag : true],
