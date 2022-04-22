@@ -61,9 +61,9 @@ denest_helper(e,n) := block([eq, g : gensym(),sol],
 	/* When no solutions are found, push e^(1/n) onto the sol. */
 	if emptyp(sol) then push(e^(1/n), sol),
 
-	/* Sort sol according to the sorting predicate ?complexity, and either
-	   return the first list member or for a multivalued case, return a one_of
-	   object. The function ?complexity is suboptimal? */
+	/* Sort sol according to the sorting predicate ?complexity and 
+      return the first list member. Maybe we should have a specialized
+      predicate for sorting? */
     first(sort(sol, lambda([a,b], ?complexity(a) < ?complexity(b)))));
 
 /* Return true iff e is a sum of complex rational numbers and terms of the form
