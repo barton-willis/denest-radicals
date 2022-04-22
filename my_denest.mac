@@ -66,6 +66,8 @@ denest_helper(e,n) := block([eq, g : gensym(),sol],
       predicate for sorting? */
     first(sort(sol, lambda([a,b], ?complexity(a) < ?complexity(b)))));
 
+/* Return true iff e is a complex number whose real and imaginary parts are
+   rational numbers.*/
 complex_rational_p(e) :=
   complex_number_p(e) and ratnump(realpart(e)) and ratnump(imagpart(e));
   
