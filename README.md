@@ -17,7 +17,7 @@ There is a great deal of literature with algorithms for denesting various classe
 
 3. filter the spurious solutions, 
 
-4. and returns a denested radical when successful. 
+4. return a denested radical when successful. 
 
 When there are denested solutions, Maxima's polynomial solver doesn't always find them. For such cases, this denesting method fails. When this code fails to denest a radical, it does not mean that the radical cannot be denested--it only means that the method isn't sufficiently general to handle the particular case.
 
