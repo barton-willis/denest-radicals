@@ -20,22 +20,7 @@ mtimesp(e) := not mapatom(e) and inpart(e,0) = "*";
 
 mexptp(e) := not mapatom(e) and inpart(e,0) = "^";
 
-map('load,['simplifying, 'to_poly_solve]);
-
-/* Define a simplifying nary function one_of. In addition to the nary 
-   simplifications, do:
-
-      one_of(X) -> X  
-      one_of(X1, X2, ... Xn) --> one_of(Y1, Y2, ..., Ym)
-
-   where [Y1, Y2, ..., Ym] = unique([X1, X2, ... Xn]). */
-
-declare(one_of, nary);   
-one_of_simp([L]) :=  (
-	L : unique(L),
-	if length(L)=1 then first(L) else simpfunmake('one_of, L));
-
-simplifying(one_of, one_of_simp);
+load(to_poly_solve);
 
 /* If q^n = e, that is if q is an nth root of e, return
    q*exp(2iπk/n), where k is an integer that makes 
@@ -79,9 +64,7 @@ denest_helper(e,n) := block([eq, g : gensym(),sol],
 	/* Sort sol according to the sorting predicate ?complexity, and either
 	   return the first list member or for a multivalued case, return a one_of
 	   object. The function ?complexity is suboptimal? */
-    /*sol : sort(sol, ?complexity),*/
- 	 apply('one_of, sol))$
-	
+    first(sort(sol, lambda([a,b], ?complexity(a) < ?complexity(b)))));
 
 /* Return true iff e is a sum of complex rational numbers and terms of the form
    n^(p/q). Oops--this function allows nested radicals to pass ? */
