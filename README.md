@@ -11,4 +11,4 @@
  
  For now, `sqrtdenest` function handles some cases that this code cannot.
 
- When this code fails to denest a radical, it does not mean that the radical cannot be denested--it only means that the method wasn't sufficiently general to handle the nested radical.
+ When this code fails to denest a radical, it does not mean that the radical cannot be denested--it only means that the method isn't sufficiently general to handle the particular case.
