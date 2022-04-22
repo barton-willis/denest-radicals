@@ -13,47 +13,44 @@ map('surd_p,[99 *(3 + sqrt(8)) ]);
 map('surd_p, [sqrt(3), %i*sqrt(7), 1-sqrt(3/4), %i-sqrt(107)]);
 [true,true,true,true]$
 
-(float_approx_equal_tolerance : float(1/2^49),0);
-0$
+/* We'll check check that denest(p) is a surd, denest(p) = q, and that 
+   float(p) = float(denest(p))  */
 
-/* We'll check check that both denest(p) = q and that float(p) = float(denest(p))  */
-
-(cfloat_approx_equal(a,b) :=
+(cfloat_approx_equal(a,b) := block([float_approx_equal_tolerance : float(1/2^49)],
   float_approx_equal(realpart(a), realpart(b)) and 
-  float_approx_equal(imagpart(a), imagpart(b)),0);
+  float_approx_equal(imagpart(a), imagpart(b))),0);
 0$
 
 (check_denest(p, q) := block([pp : denest(p)],
-    [is(equal(pp,q)) ,cfloat_approx_equal(float(p), float(pp))]),0);
+    [surd_p(pp), is(equal(pp,q)) ,cfloat_approx_equal(float(p), float(pp))]),0);
 0$
 
 /* examples from https://math.stackexchange.com/questions/196155/strategies-to-denest-nested-radicals-sqrtab-sqrtc */
 
 check_denest(sqrt(3-2*sqrt(2)), sqrt(2)-1);
-[true, true]$
+[true, true, true]$
 
 check_denest(sqrt(61-24*sqrt(5)), 3*sqrt(5)-4);
-[true, true]$
+[true, true, true]$
 
 /* Other examples */
 check_denest((83*2^(3/2)+245)^(1/3), 2^(3/2)+5);
-[true, true]$
+[true, true, true]$
 
 check_denest((5*2^(5/2)+33)^(3/2),83*2^(3/2)+245);
-[true, true]$
+[true, true, true]$
 
 check_denest(sqrt(5*2^(5/2)*%i-17), 5*%i+2^(3/2));
-[true, true]$
+[true, true, true]$
 
 check_denest(sqrt(132-10*sqrt(107)), sqrt(107)-5);
-[true,true]$
+[true, true,true]$
 
 check_denest((380-92*sqrt(17))^(1/3), 5-sqrt(17));
-[true, true]$
+[true, true, true]$
 
 check_denest((1730-182*sqrt(107))^(1/3), 5  - sqrt(107));
-[true,true]$
+[true,true,true]$
 
-(reset(float_approx_equal_tolerance),  
- kill(check_denest), kill(cfloat_approx_equal),0);
+(kill(check_denest), kill(cfloat_approx_equal),0);
 0$
