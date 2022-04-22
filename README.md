@@ -9,8 +9,17 @@
 (%o9) 24336
  ~~~
  
-There is a great deal of literature with algorithms for denesting various classes of radicals, but this package use a simple approach.
-It finds a polynomial equation for the radical, solves the polynomial equation, and filters the spurious solutions, and returns a denested radical when successful. The method fails when Maxima's polynomial solver returns a nested radical when there is a non nested radical solution. Thus when this code fails to denest a radical, it does not mean that the radical cannot be denested--it only means that the method isn't sufficiently general to handle the particular case.
+There is a great deal of literature with algorithms for denesting various classes of radicals, but this package uses a simple approach:
+
+1. find a polynomial equation with integer coefficients for the radical, 
+
+2. solve the polynomial equation, 
+
+3. filters the spurious solutions, 
+
+4. and returns a denested radical when successful. 
+
+When there are denested solutions, Maxima's polynomial solver doesn't always find them. For such cases, this denesting method fails. When this code fails to denest a radical, it does not mean that the radical cannot be denested--it only means that the method isn't sufficiently general to handle the particular case.
 
 For the square root case, this code calls `sqrtdenest.`
 
