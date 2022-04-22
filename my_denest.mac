@@ -70,7 +70,7 @@ complex_rational_p(e) :=
   complex_number_p(e) and ratnump(realpart(e)) and ratnump(imagpart(e));
   
 /* Return true iff e is a sum of complex rational numbers and terms of the form
-   n^(p/q). Oops--this function allows nested radicals to pass ? */
+   n^(p/q), where p & q are integers and n is a complex rational number.*/
 surd_p(e):=block([inflag:true],
     xreduce("or",
     [complex_rational_p(e),
