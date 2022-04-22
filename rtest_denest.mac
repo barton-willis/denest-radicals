@@ -1,6 +1,18 @@
 (load("my_denest.mac"),0);
 0$
 
+map('surd_p,[2,%i, 5*%i, 2/3, inf, minf,[]]);
+[true,true,true,true,true,true,false]$
+
+map('surd_p,[2 + %i, 2/3 - 5*%i]);
+[true,true]$
+
+map('surd_p,[99 *(3 + sqrt(8)) ]);
+[true]$
+
+map('surd_p, [sqrt(3), %i*sqrt(7), 1-sqrt(3/4), %i-sqrt(107)]);
+[true,true,true,true]$
+
 (float_approx_equal_tolerance : float(1/2^49),0);
 0$
 
