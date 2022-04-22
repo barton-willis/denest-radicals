@@ -84,7 +84,7 @@ denest_helper(e,n) := block([eq, g : gensym(),sol],
 	
 
 /* Return true iff e is a sum of complex rational numbers and terms of the form
-   n^(p/q). Opps--this function allows nested radicals to pass ? */
+   n^(p/q). Oops--this function allows nested radicals to pass ? */
 surd_p(e):=block([inflag:true],
     xreduce("or",
     [complex_number_p(e) and ratnump(realpart(e)) and ratnump(imagpart(e)),
