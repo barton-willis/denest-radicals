@@ -39,9 +39,10 @@ load(to_poly_solve);
    of solvedecomposes matters? */
 
 denest_helper(e,n) := block([eq, ee : false, g : gensym(),sol],
+   /* For the square root case, call sqrtdenest */
    if n=2 then (
       ee : sqrtdenest(sqrt(e))),
-     
+
    if surd_p(ee) then ee
    else (  
 
