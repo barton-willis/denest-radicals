@@ -62,8 +62,8 @@ denest_helper(e,n) := block([eq, ee : false, g : gensym(),sol],
 	   Also, remove redundant solutions. */
 	sol : map(lambda([solk], subst(solk,g)), unique(sol)),
   
-	/* Remove solutions that are not complex numbers or surds 
-	sol : sublist(sol, lambda([q], complex_number_p(q) or surd_p(e))), */
+	/* Remove solutions that are not complex numbers or surds */
+	sol : sublist(sol, lambda([q], complex_number_p(q) or surd_p(e))), 
    
 	/* Convert non-spurious roots to the principal root. Spurious roots
       are converted to false, so delete false from the result of mapping. */
