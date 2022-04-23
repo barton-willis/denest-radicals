@@ -22,6 +22,11 @@ mexptp(e) := not mapatom(e) and inpart(e,0) = "^";
 
 load(to_poly_solve);
 
+/* The sqrtdenest isn't in core for older Maxima versions, so 
+   conditionally load it.*/
+if not member('sqrtdenest, map(lambda([s], inpart(s,0)), functions)) then (
+   load(sqdnst));
+
 /* If q^n = e, that is if q is an nth root of e, return
    q*exp(2iπk/n), where k is an integer that makes 
    arg(q*exp(2iπk/n)) a member of (-π/n,π]. If the test 
