@@ -57,11 +57,11 @@ denest_helper(e,n) := block([eq, ee : false, g : gensym(),sol],
 	/* Solve eq for g. We hope that solve returns non-nested radicals when possible. */
 	sol : block([algexact : true, solvefactors : true, solveexplicit : true], 
 	  	solve(gfactor(eq), g)),
-	
-	/* Build the list of solutions [aaa,bbb, ...] instead of [g = aaa, g = bbb, ...]. 
+	 
+   /* Build the list of solutions [aaa,bbb, ...] instead of [g = aaa, g = bbb, ...]. 
 	   Also, remove redundant solutions. */
 	sol : map(lambda([solk], subst(solk,g)), unique(sol)),
-	
+  
 	/* Remove solutions that are not complex numbers or surds 
 	sol : sublist(sol, lambda([q], complex_number_p(q) or surd_p(e))), */
    
