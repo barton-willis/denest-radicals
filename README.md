@@ -11,7 +11,7 @@
  
 There is a great deal of literature with algorithms for denesting various classes of radicals, but this package uses a simple approach:
 
-1. find a polynomial equation with integer coefficients for the radical, 
+1. find a polynomial equation with integer coefficients with one solution being the radical.  
 
 2. solve the polynomial equation, 
 
