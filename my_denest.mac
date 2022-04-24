@@ -41,23 +41,25 @@ if not member('sqrtdenest, map(lambda([s], inpart(s,0)), functions)) then (
 
 /* Using gfactor instead of factor to precondition solve is important for some 
    complex number cases; for example, denesting sqrt(70*sqrt(3)*%i+122). When 
-   they exist, the function solve doesn't always return them. Maybe the setting
+   they exist, the function solve doesn't always return them. 
+   
+   Maybe the setting
    of solvedecomposes matters? */
 
 denest_helper(e,n) := block([eq, ee : false, g : gensym(),sol],
    /* For the square root case, call sqrtdenest */
-
       if n=2 then (
       ee : sqrtdenest(sqrt(e))),
 
    if surd_p(ee) then ee
    else (  
 
-    /* eq = minimal polynomial for e - g^n; thus e^(1/n) = g. */
+   /* eq = polynomial with one solution is g = e^(1/n). */
 	eq : first(to_poly(e - g^n,[g,1])),        
 	eq : first(first(elim_allbut(eq, g))),
 	/* Solve eq for g. We hope that solve returns non-nested radicals when possible.*/ 
-	 sol : block([algexact : true, solvefactors : true, solveexplicit : true], 
+	 sol : block([algexact : true, solvefactors : true, solveexplicit : true, 
+                  dontfactor : []], 
 	  	solve(gfactor(eq), g)), 
 	 
    /* Build the list of solutions [aaa,bbb, ...] instead of [g = aaa, g = bbb, ...]. 
