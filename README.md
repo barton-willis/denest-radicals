@@ -21,6 +21,28 @@ There is a great deal of literature with algorithms for denesting various classe
 
 When there are denested solutions, Maxima's polynomial solver doesn't always find them. For such cases, this denesting method fails. When this code fails to denest a radical, it does not mean that the radical cannot be denested--it only means that the method isn't sufficiently general to handle the particular case.
 
+Here is a polynomial that has solutions that are surds, but Maxima's solve function
+finds nested radicals for the solutions:
+
+~~~
+(%i1)	p : x^4-20*x^3+140*x^2-400*x+376;
+(p)	x^4-20*x^3+140*x^2-400*x+376
+
+(%i2)	solve(p,x);
+(%o2)	[x=5-sqrt(20\-8*sqrt(6))/2,x=sqrt(20-8*sqrt(6))/2+5,x=5-sqrt(8*sqrt(6)+20)/2,x=sqrt(8*sqrt(6)+20)/2+5]
+
+(%i3)	factor(p,g^2-3);
+(%o3)	(x^2-2*g*x-10*x+10*g+26)*(x^2+2*g*x-10*x-10*g+26)
+~~~
+To find the solutions explicitly as surds, here is one approach:
+
+~~~
+(%i4)	subst(g=sqrt(3),%);
+(%o4)	(x^2-2*sqrt(3)*x-10*x+10*sqrt(3)+26)*(x^2+2*sqrt(3)*x-10*x-10*sqrt(3)+26)
+(%i5)	solve(%,x);
+(%o5)	[x=-sqrt(3)\-sqrt(2)+5,x=-sqrt(3)+sqrt(2)+5,x=sqrt(3)-sqrt(2)+5,x=sqrt(3)+sqrt(2)+5]
+~~~
+
 For the square root case, this code calls `sqrtdenest.`
 
  
