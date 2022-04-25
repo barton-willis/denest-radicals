@@ -42,7 +42,7 @@ To find the solutions explicitly as surds, here is one approach:
 (%o4)	(x^2-2*sqrt(3)*x-10*x+10*sqrt(3)+26)*(x^2+2*sqrt(3)*x-10*x-10*sqrt(3)+26)
 
 (%i5)	solve(%,x);
-(%o5)	[x=-sqrt(3)\-sqrt(2)+5,x=-sqrt(3)+sqrt(2)+5,x=sqrt(3)-sqrt(2)+5,x=sqrt(3)+sqrt(2)+5]
+(%o5)	[x=-sqrt(3)-sqrt(2)+5,x=-sqrt(3)+sqrt(2)+5,x=sqrt(3)-sqrt(2)+5,x=sqrt(3)+sqrt(2)+5]
 ~~~
 
 
