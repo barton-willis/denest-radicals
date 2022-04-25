@@ -8,6 +8,7 @@
 (%i9) denest(%);
 (%o9) 24336
  ~~~
+ For the square root case, this code calls `sqrtdenest.`
  
 There is a great deal of literature with algorithms for denesting various classes of radicals, but this package uses a simple approach:
 
@@ -29,7 +30,7 @@ finds nested radicals for the solutions:
 (p)	x^4-20*x^3+140*x^2-400*x+376
 
 (%i2)	solve(p,x);
-(%o2)	[x=5-sqrt(20\-8*sqrt(6))/2,x=sqrt(20-8*sqrt(6))/2+5,x=5-sqrt(8*sqrt(6)+20)/2,x=sqrt(8*sqrt(6)+20)/2+5]
+(%o2)	[x=5-sqrt(20-8*sqrt(6))/2,x=sqrt(20-8*sqrt(6))/2+5,x=5-sqrt(8*sqrt(6)+20)/2,x=sqrt(8*sqrt(6)+20)/2+5]
 
 (%i3)	factor(p,g^2-3);
 (%o3)	(x^2-2*g*x-10*x+10*g+26)*(x^2+2*g*x-10*x-10*g+26)
@@ -43,6 +44,6 @@ To find the solutions explicitly as surds, here is one approach:
 (%o5)	[x=-sqrt(3)\-sqrt(2)+5,x=-sqrt(3)+sqrt(2)+5,x=sqrt(3)-sqrt(2)+5,x=sqrt(3)+sqrt(2)+5]
 ~~~
 
-For the square root case, this code calls `sqrtdenest.`
+
 
  
