@@ -35,7 +35,6 @@ finds nested radicals for the solutions:
 
 To find the solutions explicitly as surds, here is one approach:
 ~~~
-
 (%i3)	factor(p,g^2-3);
 (%o3)	(x^2-2*g*x-10*x+10*g+26)*(x^2+2*g*x-10*x-10*g+26)
 
