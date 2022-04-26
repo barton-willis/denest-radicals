@@ -20,7 +20,29 @@ mtimesp(e) := not mapatom(e) and inpart(e,0) = "*";
 
 mexptp(e) := not mapatom(e) and inpart(e,0) = "^";
 
-load(to_poly_solve);
+map('load, [to_poly_solve, "opsubst"]);
+
+/* First, gfactor eq. Second, for every term in e of the form a^q, where a 
+   and q are rational, factor eq over the field of rationals with 
+   g^denom(q) - a adjoined. After factoring, replace g by a^(1/denom(q)). */
+algebraic_factor(eq,e) := block([g : gensym()],
+   eq : gfactor(eq),
+   e : gatherargs(e,"^"),
+   e : sublist(e, lambda([q], ratnump(first(q)) and ratnump(second(q)))),
+   e : setify(e),
+   for ek in e do (
+      eq : factor(eq, g^denom(second(ek)) - first(ek)),
+      eq : subst(first(ek)^(1/denom(second(ek))),g,eq)),
+   eq);
+
+/* For every factor of e that has degree three or less, solve. Do not attempt to 
+   solve factors that are degree four or more. */
+solve_degree_three_factors(e,x) := block([algexact : true, solvefactors : true, 
+          solveexplicit : true, dontfactor : [],sol : []],
+   e : if mtimesp(e) then args(e) else [e],
+   for ex in e do (
+      if hipow(ex,x) < 4 then sol : append(solve(ex,x), sol)),
+   sol);   
 
 /* The sqrtdenest isn't in core for older Maxima versions, so 
    conditionally load it.*/
@@ -33,20 +55,17 @@ if not member('sqrtdenest, map(lambda([s], inpart(s,0)), functions)) then (
    q^n = e fails, return false.*/
 
   principalize_root(q,n,e) := block([k],
-   if is(equal(expand(q^n),e)) then (
-      k : -floor(1/2 + n*carg(q)/(2*%pi)),
+   if is(equal(rootscontract(expand(q^n)),e)) then (
+      k : floor(1/2 - n*carg(q)/(2*%pi)),
       if integerp(k) then expand(rectform(exp(2*%pi*%i*k/n))*q) else false)
    else false);   
 
-
 /* Using gfactor instead of factor to precondition solve is important for some 
    complex number cases; for example, denesting sqrt(70*sqrt(3)*%i+122). When 
-   they exist, the function solve doesn't always return them. 
-   
-   Maybe the setting
+   they exist, the function solve doesn't always return them. Maybe the setting
    of solvedecomposes matters? */
 
-denest_helper(e,n) := block([eq, ee : false, g : gensym(),sol],
+denest_helper(e,n) := block([eq, ee : false, g : gensym(),sol, ker],
    /* For the square root case, call sqrtdenest */
       if n=2 then (
       ee : sqrtdenest(sqrt(e))),
@@ -58,13 +77,14 @@ denest_helper(e,n) := block([eq, ee : false, g : gensym(),sol],
 	eq : first(to_poly(e - g^n,[g,1])),        
 	eq : first(first(elim_allbut(eq, g))),
 	/* Solve eq for g. We hope that solve returns non-nested radicals when possible.*/ 
-	 sol : block([algexact : true, solvefactors : true, solveexplicit : true, 
-                  dontfactor : []], 
-	  	solve(gfactor(eq), g)), 
-	 
+    eq : algebraic_factor(eq,e),
+    sol : solve_degree_three_factors(eq, g),
+	 sol : map(lambda([s], block([algebraic : true], ratsimp(s))), sol),
+
    /* Build the list of solutions [aaa,bbb, ...] instead of [g = aaa, g = bbb, ...]. 
 	   Also, remove redundant solutions. */
 	sol : map(lambda([solk], subst(solk,g)), unique(sol)),
+   
    
 	/* Remove solutions that are not complex numbers or surds */
 	sol : sublist(sol, lambda([q], complex_number_p(q) or surd_p(e))), 
