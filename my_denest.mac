@@ -60,10 +60,14 @@ if not member('sqrtdenest, map(lambda([s], inpart(s,0)), functions)) then (
       if integerp(k) then expand(rectform(exp(2*%pi*%i*k/n))*q) else false)
    else false);   
 
-/* Using gfactor instead of factor to precondition solve is important for some 
-   complex number cases; for example, denesting sqrt(70*sqrt(3)*%i+122). When 
-   they exist, the function solve doesn't always return them. Maybe the setting
-   of solvedecomposes matters? */
+/* To help solve find un-nested solutions, we will precondition the
+   equations using algebraic_factor (that also automatically calls 
+   gfactor). The function solve_degree_three_factors declines to 
+   attempt to solve any factor of degree four or greater. Possibly
+   restricing solve this way misses some de-nestings. 
+   
+   Maybe the setting of solvedecomposes matters?
+   */
 
 denest_helper(e,n) := block([eq, ee : false, g : gensym(),sol, ker],
    /* For the square root case, call sqrtdenest */
