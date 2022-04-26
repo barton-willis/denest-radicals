@@ -45,6 +45,20 @@ To find the solutions explicitly as surds, here is one approach:
 (%o5)	[x=-sqrt(3)-sqrt(2)+5,x=-sqrt(3)+sqrt(2)+5,x=sqrt(3)-sqrt(2)+5,x=sqrt(3)+sqrt(2)+5]
 ~~~
 
+# Installation and usage
+
+Copy the files `my_denest.mac` and `rtest_denest.mac` into a directory that is in the Maxima list `file_search_maxima.`  To load the file enter `load(my_denest).` The only user level function in the package is `denest.`  Example:
+~~~
+(%i13)	load(my_denest)$
+(%i14)	denest((6*5^(2/3)+12*5^(1/3)+13)^(1/3));
+(%o14)	5^(1/3)+2
+~~~
+For expressions that don't denest or don't contain radicals, `denest` returns the input; for example
+~~~
+(%i15)	denest(cos(x) + 1);
+(%o15)	cos(x)+1
+~~~
+
 
 
  
