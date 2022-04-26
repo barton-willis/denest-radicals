@@ -23,12 +23,15 @@ map('surd_p, [sqrt(3+%i)]);
    float(p) = float(denest(p))  */
 
 (cfloat_approx_equal(a,b) := block([float_approx_equal_tolerance : float(1/2^45)],
+  a : float(rectform(a)),
+  b : float(rectform(b)),
   float_approx_equal(realpart(a), realpart(b)) and 
   float_approx_equal(imagpart(a), imagpart(b))),0);
 0$
 
 (check_denest(p, q) := block([pp : denest(p)],
-    [surd_p(pp), is(equal(pp,q)) ,cfloat_approx_equal(float(p), float(pp))]),0);
+    pp : rootscontract(expand(pp)),
+    [surd_p(pp), is(equal(pp,q)) ,cfloat_approx_equal(p, pp)]),0);
 0$
 
 /* examples from https://math.stackexchange.com/questions/196155/strategies-to-denest-nested-radicals-sqrtab-sqrtc */
@@ -55,7 +58,7 @@ check_denest(sqrt(132-10*sqrt(107)), sqrt(107)-5);
 check_denest((380-92*sqrt(17))^(1/3), 5-sqrt(17));
 [true, true, true]$
 
-check_denest((1730-182*sqrt(107))^(1/3), 5  - sqrt(107));
+check_denest((1730-182*sqrt(107))^(1/3),-(sqrt(107)*(sqrt(3)*%i-1)-5*sqrt(3)*%i+5)/2);
 [true,true,true]$
 
 /* From https://brownmath.com/alge/nestrad.htm */

@@ -16,7 +16,7 @@ There is a great deal of literature with algorithms for denesting various classe
 
 2. solve the polynomial equation, 
 
-3. filter the spurious solutions, 
+3. remove the solutions that do not equal the radical, 
 
 4. return a denested radical when successful. 
 
