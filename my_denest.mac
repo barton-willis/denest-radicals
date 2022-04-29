@@ -35,13 +35,36 @@ algebraic_factor(eq,e) := block([g : gensym()],
       eq : subst(first(ek)^(1/denom(second(ek))),g,eq)),
    eq);
 
+/* Return p is a polynomial in the variable x of the form c4*x^4+c2*x^2+c0, where
+   c0,c2, and c4 are free of x. */
+biquadratic_p(p,x) := (
+  p : expand(p),
+  polynomialp(p,[x]) and hipow(p,x) = 4 and coeff(p,x,4) # 0 and coeff(p,x,3) = 0 and coeff(p,x,1) = 0);
+
+/* Return a list of the roots of a biquadratic polynomial. This function does not
+   check that p is a biquadratic. When possible, this function returns the roots
+   as non-nested radicals. Example: 
+      (%i3)	solve_biquartic(x^4+x^2+1,x);
+      (%o3)	[x=(sqrt(3)*%i)/2+1/2, ... ]
+   The function solve returns nested radicals for this equation.*/   
+
+solve_biquartic(p,x) := block([c0,c2,c4,a,b],
+  c4 : coeff(p,x,4),
+  c2 : coeff(p,x,2)/c4,
+  c0 : coeff(p,x,0)/c4,
+  a : radcan((2*sqrt(c0)-c2)/4),
+  b : radcan(-(c2+2*sqrt(c0))/4),
+  /* When a=b, this is still correct, but x=0 is listed twice */
+  [x=sqrt(a)+sqrt(b),x=-sqrt(a)+sqrt(b), x=sqrt(a)-sqrt(b), x=-sqrt(a)-sqrt(b)]);
+
 /* For every factor of e that has degree three or less, solve. Do not attempt to 
    solve factors that are degree four or more. */
 solve_degree_three_factors(e,x) := block([algexact : true, solvefactors : true, 
           solveexplicit : true, dontfactor : [],sol : []],
    e : if mtimesp(e) then args(e) else [e],
    for ex in e do (
-      if hipow(ex,x) < 4 then sol : append(solve(ex,x), sol)),
+      if biquadratic_p(ex,x) and false then sol : append(solve_biquartic(ex,x),sol)
+      elseif hipow(ex,x) < 4 then sol : append(solve(ex,x), sol)),
    sol);   
 
 /* The sqrtdenest function isn't in core for some Maxima versions, so conditionally 
@@ -54,7 +77,7 @@ if not ?get('sqrtdenest, '?impl\-name) then load(sqdnst);
    q^n = e fails, return false.*/
 
   principalize_root(q,n,e) := block([k],
-   if is(equal(rootscontract(expand(q^n)),e)) then (
+   if is(equal(radcan(rootscontract(expand(q^n))),e)) then (
       k : floor(1/2 - n*carg(q)/(2*%pi)),
       if integerp(k) then expand(rectform(exp(2*%pi*%i*k/n))*q) else false)
    else false);   
@@ -88,9 +111,8 @@ denest_helper(e,n) := block([eq, ee : false, g : gensym(),sol, ker],
 	   Also, remove redundant solutions. */
 	sol : map(lambda([solk], subst(solk,g)), unique(sol)),
    
-   
 	/* Remove solutions that are not complex numbers or surds */
-	sol : sublist(sol, lambda([q], complex_number_p(q) or surd_p(e))), 
+	sol : sublist(sol, lambda([q], complex_number_p(q) or surd_p(q))), 
    
 	/* Convert non-spurious roots to the principal root. Spurious roots
       are converted to false, so delete false from the result of mapping. */
