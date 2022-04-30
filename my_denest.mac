@@ -41,30 +41,40 @@ biquadratic_p(p,x) := (
   p : expand(p),
   polynomialp(p,[x]) and hipow(p,x) = 4 and coeff(p,x,4) # 0 and coeff(p,x,3) = 0 and coeff(p,x,1) = 0);
 
-/* Return a list of the roots of a biquadratic polynomial. This function does not
-   check that p is a biquadratic. When possible, this function returns the roots
-   as non-nested radicals. Example: 
-      (%i3)	solve_biquartic(x^4+x^2+1,x);
-      (%o3)	[x=(sqrt(3)*%i)/2+1/2, ... ]
-   The function solve returns nested radicals for this equation.*/   
+/* Return a list of the roots of a biquadratic polynomial c0 + c2*x^2 + x^4. 
+When possible, this function returns the roots as non-nested radicals. 
+Example: solve_biquartic(1,1,x) compared to solve(x^4+x^2+1,x). */   
 
-solve_biquartic(p,x) := block([c0,c2,c4,a,b],
-  c4 : coeff(p,x,4),
-  c2 : coeff(p,x,2)/c4,
-  c0 : coeff(p,x,0)/c4,
+solve_biquartic(c0,c2,x) := block([a,b],
   a : radcan((2*sqrt(c0)-c2)/4),
   b : radcan(-(c2+2*sqrt(c0))/4),
   /* When a=b, this is still correct, but x=0 is listed twice */
   [x=sqrt(a)+sqrt(b),x=-sqrt(a)+sqrt(b), x=sqrt(a)-sqrt(b), x=-sqrt(a)-sqrt(b)]);
 
+/* Solve the quartic polynomial p = c0 + c1 x + c2 x^2 + c3 x^3 + c4 x^4 for x, 
+   returning non-nested radical solutions when possible, and otherwise return 
+   the empty list. There are non-nested solutions for both the biquartic case and 
+   when 8*c1*c4^2-4*c2*c3*c4+c3^3 = 0. */
+
+solve_quartic(p,x) := block([c0,c1,c2,c3,c4,a,b,c, prederror : false],
+  p : rat(p,x),
+  c4 : ratcoeff(p,x,4),
+  [c0,c1,c2,c3] : map(lambda([k], ratcoeff(p,x,k)/c4), [0,1,2,3]),
+  if (c1=0) and (c3=0) then (
+     solve_biquartic(c0,c2,x))
+  elseif ratsimp(c3^3-4*c2*c3+8*c1)=0 and every('ratnump, [c0,c1,c2,c3]) then (
+     factor(solve(p,x)))
+  else []);    
+
 /* For every factor of e that has degree three or less, solve. Do not attempt to 
    solve factors that are degree four or more. */
-solve_degree_three_factors(e,x) := block([algexact : true, solvefactors : true, 
-          solveexplicit : true, dontfactor : [],sol : []],
+solve_degree_four_or_less(e,x) := block([algexact : true, solvefactors : true, 
+          solveexplicit : true, dontfactor : [],sol : [],n],
    e : if mtimesp(e) then args(e) else [e],
    for ex in e do (
-      if biquadratic_p(ex,x) and false then sol : append(solve_biquartic(ex,x),sol)
-      elseif hipow(ex,x) < 4 then sol : append(solve(ex,x), sol)),
+      n : hipow(ex,x),
+      if n=4 then sol : append(solve_quartic(ex,x),sol)
+      elseif n < 4 then sol : append(solve(ex,x), sol)),
    sol);   
 
 /* The sqrtdenest function isn't in core for some Maxima versions, so conditionally 
@@ -104,7 +114,7 @@ denest_helper(e,n) := block([eq, ee : false, g : gensym(),sol, ker],
 	eq : first(first(elim_allbut(eq, g))),
 	/* Solve eq for g. We hope that solve returns non-nested radicals when possible.*/ 
     eq : algebraic_factor(eq,e),
-    sol : solve_degree_three_factors(eq, g),
+    sol : solve_degree_four_or_less(eq, g),
 	 sol : map(lambda([s], block([algebraic : true], ratsimp(s))), sol),
 
    /* Build the list of solutions [aaa,bbb, ...] instead of [g = aaa, g = bbb, ...]. 
