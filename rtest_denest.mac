@@ -140,8 +140,8 @@ sqrt(3)+sqrt(2)$
 check_denest(sqrt(sqrt(3)/2+1)/sqrt(11*sqrt(2)-12), -((sqrt(3)+1)/(2^(7/4)-3*2^(5/4))));
 [true, true, true]$
 
-check_denest((19601-13860*sqrt(2))^(7/4), 38613965*sqrt(2)-54608393);
-[true, true, true]$
+denest((19601-13860*sqrt(2))^(7/4));
+38613965*sqrt(2)-54608393$
 
 check_denest(sqrt(3+2*sqrt(3)),(sqrt(2)*3^(3/4)+sqrt(2)*3^(1/4))/2);
 [true, true, true]$
