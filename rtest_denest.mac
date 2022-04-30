@@ -143,9 +143,8 @@ check_denest(sqrt(sqrt(3)/2+1)/sqrt(11*sqrt(2)-12), -((sqrt(3)+1)/(2^(7/4)-3*2^(
 check_denest((19601-13860*sqrt(2))^(7/4), 38613965*sqrt(2)-54608393);
 [true, true, true]$
 
-denest(sqrt(3+2*sqrt(3)));
-/*3^(3/4)/sqrt(2)+3^(1/4)/sqrt(2);*/
-27^(1/4)/sqrt(2)+3^(1/4)/sqrt(2)$
+check_denest(sqrt(3+2*sqrt(3)),(sqrt(2)*3^(3/4)+sqrt(2)*3^(1/4))/2);
+[true, true, true]$
 
 denest(sqrt(4+3*sqrt(2)));
 2^(3/4)+2^(1/4)$
@@ -275,7 +274,7 @@ denest(sqrt(13 - 2*sqrt(10) + 2*sqrt(2)*sqrt(-2*sqrt(10) + 11)));
 -1 + sqrt(2) + sqrt(10)$
 
 (z: sqrt(13 - 2*sqrt(10) + 2*sqrt(2)*sqrt(-2*sqrt(10) + 11)),
-denest(z, 1));
+denest(z));
 -1 + sqrt(2) + sqrt(10)$
 
 (n: sqrt(2*sqrt(6)/7 + 2*sqrt(7)/7 + 2*sqrt(42)/7 + 2),
@@ -330,9 +329,8 @@ z: sqrt(20*ra*sqrt(3 + 3*sqrt(3)) + 12*sqrt(3)*ra*sqrt(3 + 3*sqrt(3))
 denest(z));
 2*3^(3/2)+10$
 
-(z: sqrt(1/(4*sqrt(3) + 7) + 1),
-denest(z));
-sqrt(6)-sqrt(2)$
+(z: sqrt(1/(4*sqrt(3) + 7) + 1), denest(z));
+(sqrt(6)+sqrt(2))/(sqrt(3)+2);
 
 (z: sqrt(1/(4*sqrt(3) + 7) + 1),
 denest(1 + z));
