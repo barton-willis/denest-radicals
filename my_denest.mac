@@ -56,7 +56,7 @@ solve_biquartic(c0,c2,x) := block([a,b],
    the empty list. There are non-nested solutions for both the biquartic case and 
    when 8*c1*c4^2-4*c2*c3*c4+c3^3 = 0. */
 
-solve_quartic(p,x) := block([c0,c1,c2,c3,c4,a,b,c, prederror : false],
+solve_quartic_surd_only(p,x) := block([c0,c1,c2,c3,c4,a,b,c, prederror : false],
   p : rat(p,x),
   c4 : ratcoeff(p,x,4),
   [c0,c1,c2,c3] : map(lambda([k], ratcoeff(p,x,k)/c4), [0,1,2,3]),
@@ -73,7 +73,7 @@ solve_degree_four_or_less(e,x) := block([algexact : true, solvefactors : true,
    e : if mtimesp(e) then args(e) else [e],
    for ex in e do (
       n : hipow(ex,x),
-      if n=4 then sol : append(solve_quartic(ex,x),sol)
+      if n=4 then sol : append(solve_quartic_surd_only(ex,x),sol)
       elseif n < 4 then sol : append(solve(ex,x), sol)),
    sol);   
 

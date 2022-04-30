@@ -129,5 +129,255 @@ denest(2028*(2*3^(5/2)*%i+35)^(1/3)-(2*3^(5/2)*%i+35)^(2/3)*(8*3^(7/2)*%i-420)+1
 denest(sqrt(70*sqrt(3)*%i+122));
 5*%i+7*sqrt(3)$
 
+/* original Maxima 5.39 sqdnst tests */
+
+denest(sqrt(3+2*sqrt(2)));
+sqrt(2)+1$
+
+denest(sqrt(5+2*sqrt(6)));
+sqrt(3)+sqrt(2)$
+
+check_denest(sqrt(sqrt(3)/2+1)/sqrt(11*sqrt(2)-12), -((sqrt(3)+1)/(2^(7/4)-3*2^(5/4))));
+[true, true, true]$
+
+check_denest((19601-13860*sqrt(2))^(7/4), 38613965*sqrt(2)-54608393);
+[true, true, true]$
+
+denest(sqrt(3+2*sqrt(3)));
+/*3^(3/4)/sqrt(2)+3^(1/4)/sqrt(2);*/
+27^(1/4)/sqrt(2)+3^(1/4)/sqrt(2)$
+
+denest(sqrt(4+3*sqrt(2)));
+2^(3/4)+2^(1/4)$
+
+denest(sqrt(199999-600*sqrt(111110)));
+10^(5/2)-3*sqrt(11111)$
+
+denest((sqrt(2*sqrt(6)+5)+1)^(1/3));
+(sqrt(3)+sqrt(2)+1)^(1/3)$
+
+denest(sqrt(5+4*sqrt(5+2*sqrt(6))));
+/*sqrt(4*(sqrt(3)+sqrt(2))+5);*/
+sqrt(4*sqrt(3)+2^(5/2)+5)$
+
+denest(sqrt(5*sqrt(3)+6*sqrt(2)));
+3^(3/4)+sqrt(2)*3^(1/4)$
+
+/* Sympy 1.0 test suite
+Some of the examples don't denest;
+check that there's no uncaught error */
+
+denest(sqrt(5+2*sqrt(6)));
+sqrt(3)+sqrt(2)$
+
+denest(sqrt(5+sqrt(7)));
+sqrt(5+sqrt(7))$
+
+denest(sqrt(3 + sqrt(5 + 2*sqrt(7))));
+/*sqrt((sqrt(7)-2)/2)*(5+2*sqrt(7))^(1/4)+((2*sqrt(7)-5)/3)^(1/4)*sqrt((3*sqrt(7)+6)/2)$*/
+sqrt(6*sqrt(7)+12)/(2*(5+2*sqrt(7))^(1/4))+(3*(5+2*sqrt(7))^(1/4))/(sqrt(2)*sqrt(3*sqrt(7)+6))$
+
+/* sympy test_sqrtdenest2() */
+denest(sqrt(16 - 2*sqrt(29) + 2*sqrt(55 - 10*sqrt(29))));
+sqrt(5) + sqrt(11 - 2*sqrt(29))$
+
+denest(sqrt(-sqrt(5) + sqrt(-2*sqrt(29) + 2*sqrt(-10*sqrt(29) + 55) + 16)));
+(-2*sqrt(29) + 11)^(1/4)$
+
+denest(sqrt(1 + sqrt(1+sqrt(7))));
+sqrt(1 + sqrt(1+sqrt(7)))$
+
+(e: sqrt(expand((1 + sqrt(1 + 2*sqrt(3 + sqrt(2) + sqrt(5))))^2)),
+denest(e));
+1+sqrt(1+2*sqrt(sqrt(2)+sqrt(5)+3))$
+
+denest(sqrt(5*sqrt(3)+6*sqrt(2)));
+sqrt(2)*3^(1/4)+3^(3/4)$
+
+denest(sqrt(expand((1 + sqrt(5) + sqrt(1 + sqrt(3)))^2)));
+1+sqrt(5)+sqrt(1+sqrt(3))$
+
+denest(sqrt(expand((1 + sqrt(5) + sqrt(7) + sqrt(1 + sqrt(3)))^2)));
+1 + sqrt(1 + sqrt(3)) + sqrt(5) + sqrt(7)$
+
+( e: sqrt(-2*sqrt(10) + 2*sqrt(2)*sqrt(-2*sqrt(10) + 11) + 14),
+denest(e));
+sqrt(-2*sqrt(10) - 2*sqrt(2) + 4*sqrt(5) + 14)$
+
+/* check that the result is not more complicated than the input */
+(z: sqrt(-2*sqrt(29) + cos(2) + 2*sqrt(-10*sqrt(29) + 55) + 16),
+denest(z));
+sqrt(-2*sqrt(29) + cos(2) + 2*sqrt(-10*sqrt(29) + 55) + 16)$
+
+denest(sqrt(sqrt(6) + sqrt(15)));
+sqrt(sqrt(6) + sqrt(15))$
+
+(z: sqrt(15 - 2*sqrt(31) + 2*sqrt(55 - 10*sqrt(29))),
+denest(z));
+sqrt(15 - 2*sqrt(31) + 2*sqrt(55 - 10*sqrt(29)))$
+
+/* sympy test_sqrtdenest_rec() */
+denest(sqrt(-4*sqrt(14) - 2*sqrt(6) + 4*sqrt(21) + 33));
+-sqrt(2)+sqrt(3)+2*sqrt(7)$
+
+denest(sqrt(-28*sqrt(7) - 14*sqrt(5) + 4*sqrt(35) + 82));
+-7 + sqrt(5) + 2*sqrt(7)$
+
+denest(sqrt(6*sqrt(2)/11 + 2*sqrt(22)/11 + 6*sqrt(11)/11 + 2));
+2/sqrt(22)+3/sqrt(11)+1;
+
+denest(sqrt(468*sqrt(3) + 3024*sqrt(2) + 2912*sqrt(6) + 19735));
+9*sqrt(3) + 26 + 56*sqrt(6)$
+
+denest(sqrt(-490*sqrt(3) - 98*sqrt(115) - 98*sqrt(345) - 2107));
+%i*(7*sqrt(5) + 7*sqrt(15) + 7*sqrt(23))$
+
+denest(sqrt(-4*sqrt(14) - 2*sqrt(6) + 4*sqrt(21) + 34));
+sqrt(-4*sqrt(14) - 2*sqrt(6) + 4*sqrt(21) + 34)$
+
+denest(sqrt(-8*sqrt(2) - 2*sqrt(5) + 18));
+-sqrt(10) + 1 + sqrt(2) + sqrt(5)$
+
+denest(sqrt(8*sqrt(2) + 2*sqrt(5) - 18));
+%i*(-sqrt(10) + 1 + sqrt(2) + sqrt(5))$
+
+denest(sqrt(8*sqrt(2)/3 + 14*sqrt(5)/3 + 154/9));
+-sqrt(10)/3 + sqrt(2) + sqrt(5) + 3$
+
+denest(sqrt(sqrt(2*sqrt(6) + 5) + sqrt(2*sqrt(7) + 8)));
+sqrt(1 + sqrt(2) + sqrt(3) + sqrt(7))$
+
+denest(sqrt(4*sqrt(15) + 8*sqrt(5) + 12*sqrt(3) + 24));
+1 + sqrt(3) + sqrt(5) + sqrt(15)$
+
+/* These tests do not run to completion--I think the reason is that
+   factor has problems with some field extensions. For now, these 
+   tests are commented out 
+(w: 1 + sqrt(2) + sqrt(3) + sqrt(5) + sqrt(7),
+denest(sqrt(expand(w^2))));
+1+sqrt(2)+sqrt(3)+sqrt(5)+sqrt(7)$ 
+
+(w: 1 + sqrt(2) + sqrt(3) + sqrt(5) + sqrt(7),
+z: sqrt(expand(w^2)+1),
+denest(z));
+sqrt(2*sqrt(35)+2*sqrt(21)+2*sqrt(15)+2*sqrt(14)+2*sqrt(10)+2*sqrt(7)+2*sqrt(6)+2*sqrt(5)+2*sqrt(3)+2^(3/2)+19)$
+
+denest(sqrt(2*sqrt(10) + 6*sqrt(2) + 4*sqrt(5) + 12 + 10*sqrt(15)
+	+ 30*sqrt(3)));
+sqrt(2*sqrt(10) + 6*sqrt(2) + 4*sqrt(5) + 12 + 10*sqrt(15) + 30*sqrt(3))$
+
+denest(sqrt( -320 + 32*sqrt(5) + 64*sqrt(15)));
+sqrt( -320 + 32*sqrt(5) + 64*sqrt(15))$
+
+*/
+/*def test_sqrtdenest3(): */
+denest(sqrt(13 - 2*sqrt(10) + 2*sqrt(2)*sqrt(-2*sqrt(10) + 11)));
+-1 + sqrt(2) + sqrt(10)$
+
+(z: sqrt(13 - 2*sqrt(10) + 2*sqrt(2)*sqrt(-2*sqrt(10) + 11)),
+denest(z, 1));
+-1 + sqrt(2) + sqrt(10)$
+
+(n: sqrt(2*sqrt(6)/7 + 2*sqrt(7)/7 + 2*sqrt(42)/7 + 2),
+d: sqrt(16 - 2*sqrt(29) + 2*sqrt(55 - 10*sqrt(29))),
+denest(n/d));
+(1+1/sqrt(7)+6/sqrt(42))/(sqrt(11-2*sqrt(29))+sqrt(5))$
+
+denest(sqrt(sqrt(sqrt(2) + 2) + 2));
+sqrt(sqrt(sqrt(2) + 2) + 2)$
+
+denest(sqrt(-2*sqrt(10) + 4*sqrt(2)*sqrt(-2*sqrt(10) + 11) + 20));
+sqrt(-2*sqrt(10) - 4*sqrt(2) + 8*sqrt(5) + 20)$
+
+denest(sqrt((112 + 70*sqrt(2)) + (46 + 34*sqrt(2))*sqrt(5)));
+sqrt(10) + 5 + 4*sqrt(2) + 3*sqrt(5)$
+
+(z: sqrt(5 + sqrt(2*sqrt(6) + 5)*sqrt(-2*sqrt(29)
+	+ 2*sqrt(-10*sqrt(29) + 55) + 16)),
+denest(z));
+sqrt(sqrt(22-4*sqrt(29))+sqrt(33-6*sqrt(29))+sqrt(15)+sqrt(10)+5)$
+
+(z: sqrt(5 + sqrt(2*sqrt(6) + 5)*sqrt(-2*sqrt(29)
+	+ 2*sqrt(-10*sqrt(29) + 55) + 16)),
+denest(z));
+/*sqrt(sqrt(2)*sqrt(-2*sqrt(29) + 11) + sqrt(3)*sqrt(-2*sqrt(29) + 11)
+	+ sqrt(10) + sqrt(15) + 5);*/
+sqrt(sqrt(22-4*sqrt(29))+sqrt(33-6*sqrt(29))+sqrt(15)+sqrt(10)+5)$
+
+/* def test_sqrtdenest4():
+    # see Denest_en.pdf in https://github.com/sympy/sympy/issues/3192 */
+(z: sqrt(8 - sqrt(2)*sqrt(5 - sqrt(5)) - sqrt(3)*(1 + sqrt(5))),
+denest(z));
+sqrt(30)/4+sqrt(10)/4-sqrt(6)/4+sqrt(25-5^(3/2))/4-sqrt(75-3*5^(3/2))/4+sqrt(5-sqrt(5))/4-sqrt(15-3*sqrt(5))/4-1/2^(3/2)$
+
+denest(sqrt(2*sqrt(2)*sqrt(sqrt(2) + 2) + 5*sqrt(2) 
+	+ 4*sqrt(sqrt(2) + 2) + 8));
+sqrt(2) + sqrt(sqrt(2) + 2) + 2$
+
+(w: 2 + sqrt(2) + sqrt(3) + (1 + sqrt(3))*sqrt(2 + sqrt(2) + 5*sqrt(3)),
+z: sqrt(expand(w^2)),
+denest(z));
+sqrt(5*3^(3/2)+3*sqrt(2)+6)+sqrt(5*sqrt(3)+sqrt(2)+2)+sqrt(3)+sqrt(2)+2$
+
+
+/* def test_sqrt_symbolic_denest():*/
+denest(sqrt(expand((1 + sqrt(sqrt(2 + x) + 3))^2)));
+sqrt((1 + sqrt(sqrt(2 + x) + 3))^2)$
+
+(ra: sqrt(1 + sqrt(3)),
+z: sqrt(20*ra*sqrt(3 + 3*sqrt(3)) + 12*sqrt(3)*ra*sqrt(3 + 3*sqrt(3))
+	+ 64*sqrt(3) + 112),
+denest(z));
+2*3^(3/2)+10$
+
+(z: sqrt(1/(4*sqrt(3) + 7) + 1),
+denest(z));
+sqrt(6)-sqrt(2)$
+
+(z: sqrt(1/(4*sqrt(3) + 7) + 1),
+denest(1 + z));
+sqrt(6)-sqrt(2)+1$
+
+/* additional checks */
+
+check_denest((3+sqrt(8))^(5/2), 29*sqrt(2)+41);
+[true,true,true]$
+
+/* _rad_denest_ramanujan */
+check_denest(sqrt(5^(1/3)-4^(1/3)), (-20^(2/3)+4^(2/3)*20^(1/3)+2*4^(1/3))/(3*4^(2/3)));
+[true,true,true]$
+
+check_denest(sqrt(28^(1/3)-3), (28^(2/3)-2*28^(1/3)-2)/6);
+[true,true,true]$
+
+denest(sqrt(3-28^(1/3)));
+((-1-28^(1/3)+98^(1/3))*%i)/3$
+
+denest(sqrt((-13)^(1/3)+(-108)^(1/3)));
+((-2^(1/3)+52^(1/3)+169^(1/3))*%i)/3$
+
+check_denest(sqrt(13^(1/3)+108^(1/3)), (52^(2/3)+4^(2/3)*52^(1/3)-2*4^(1/3))/(3*4^(2/3)));
+[true,true,true]$
+
+check_denest(sqrt(48^(1/3)-12^(1/3)), -(6^(2/3)-3^(1/3)*6^(1/3)-2*3^(2/3))/3);
+[true,true,true]$
+
+/* _rad_denest_cardano */
+
+check_denest((2-sqrt(5))^(1/3), (sqrt(5)*(sqrt(3)*%i+1)-sqrt(3)*%i-1)/4);
+[true,true,true]$
+
+denest((38+17*sqrt(5))^(1/12));
+(2+sqrt(5))^(1/4)$
+
+denest((41-29*sqrt(2))^(1/5));
+sqrt(2)*(%i*sin((4*%pi)/5)-cos((4*%pi)/5))-%i*sin((4*%pi)/5)+cos((4*%pi)/5)$
+
+denest((375308427136/390625-(9950503296*sqrt(29))/78125)^(1/8));
+(5*sqrt(29)-3)/5$
+
+(remvalue(e,z,n,d,w,ra),0);
+0$
+
 (kill(check_denest), kill(cfloat_approx_equal),0);
 0$
