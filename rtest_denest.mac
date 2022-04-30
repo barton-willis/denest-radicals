@@ -332,9 +332,8 @@ denest(z));
 (z: sqrt(1/(4*sqrt(3) + 7) + 1), denest(z));
 (sqrt(6)+sqrt(2))/(sqrt(3)+2);
 
-(z: sqrt(1/(4*sqrt(3) + 7) + 1),
-denest(1 + z));
-sqrt(6)-sqrt(2)+1$
+(z: sqrt(1/(4*sqrt(3) + 7) + 1),denest(1 + z));
+(sqrt(6)+sqrt(3)+sqrt(2)+2)/(sqrt(3)+2)$
 
 /* additional checks */
 
