@@ -62,5 +62,5 @@ For expressions that don't denest or don't contain radicals, `denest` returns th
 (%o15)	cos(x)+1
 ~~~
 
-To run the test suite, enter `batch(rtest_denest,'test)` to a Maxima prompt. These
+To run the test suite, at a Maxima prompt, enter `batch(rtest_denest,'test)`. These
 tests include most of testsuite for the `raddenest` package. As of 2 May 2022, 35 out of 102 tests fail. 
