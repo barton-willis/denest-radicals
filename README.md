@@ -4,7 +4,7 @@
  
  For a comprehensive Maxima package for denesting, see https://github.com/gschintgen/raddenest. 
 
- For a constant expression involving nested rational powers, the `denest` package attempts to find an un-nested representation. Unlike Maxima's `sqrtdenest` function that handles nested square roots, this function attempts to denest more general expressions, including expressions involving cube roots; for example
+ For a constant expression involving nested rational powers, the `denest` package attempts to find an un-nested representation of the algebraic number. Unlike Maxima's `sqrtdenest` function that handles nested square roots, this function attempts to denest more general expressions, including expressions involving cube roots; for example
  ~~~
 (%i8) 2028*(2*3^(5/2)*%i+35)^(1/3)-(2*3^(5/2)*%i+35)^(2/3)*(8*3^(7/2)*%i-420)+10140$
 
