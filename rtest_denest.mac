@@ -81,8 +81,8 @@ denest(sqrt(sqrt(1058) - sqrt(896)));
 
 /* From https://math.mit.edu/research/highschool/primes/materials/2017/conf/8-2-Dokmeci.pdf
    These are due to Ramanujan */
-denest(sqrt(5^(1/3) - 4^(1/3)));
-(-20^(2/3)+4^(2/3)*20^(1/3)+2*4^(1/3))/(3*4^(2/3))$
+check_denest(sqrt(5^(1/3) - 4^(1/3)), (-4^(1/3)*20^(2/3)+4*20^(1/3)+2*4^(2/3))/12);
+[true,true,true]$
 
 denest((7*20^(1/3) - 19)^(1/6));
 (5/3)^(1/3) - (2/3)^(1/3)$
@@ -175,9 +175,9 @@ sqrt(3)+sqrt(2)$
 denest(sqrt(5+sqrt(7)));
 sqrt(5+sqrt(7))$
 
+/* I don't know if this denests, but at least the output and input mactch.*/
 denest(sqrt(3 + sqrt(5 + 2*sqrt(7))));
-/*sqrt((sqrt(7)-2)/2)*(5+2*sqrt(7))^(1/4)+((2*sqrt(7)-5)/3)^(1/4)*sqrt((3*sqrt(7)+6)/2)$*/
-sqrt(6*sqrt(7)+12)/(2*(5+2*sqrt(7))^(1/4))+(3*(5+2*sqrt(7))^(1/4))/(sqrt(2)*sqrt(3*sqrt(7)+6))$
+sqrt(3+sqrt(5+2*sqrt(7)))$
 
 /* sympy test_sqrtdenest2() */
 denest(sqrt(16 - 2*sqrt(29) + 2*sqrt(55 - 10*sqrt(29))));
