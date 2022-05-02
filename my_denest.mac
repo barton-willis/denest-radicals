@@ -87,7 +87,7 @@ if not ?get('sqrtdenest, '?impl\-name) then load(sqdnst);
 
   principalize_root(q,n,e) := block([k],
       k : floor(1/2 - n*carg(q)/(2*%pi)),
-      if integerp(k) then  demoivre(exp(2*%pi*%i*k/n))*q else false);
+      if integerp(k) then demoivre(exp(2*%pi*%i*k/n))*q else false);
 
 /* To help solve find un-nested solutions, we will precondition the
    equations using algebraic_factor (that also automatically calls 
