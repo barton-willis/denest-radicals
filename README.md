@@ -1,7 +1,10 @@
 # Maxima CAS code for denesting radicals
- Maxima CAS code for denesting radicals. For another Maxima package for denesting, see https://github.com/gschintgen/raddenest.
+
+ Simple and compact Maxima CAS code for denesting radicals (`denest`). 
  
- For a constant expression involving nested rational powers, this code attempts to find an un-nested representation. Unlike Maxima's `sqrtdenest` function that handles nested square roots, this function attempts to denest more general expressions, including expressions involving cube roots; for example
+ For a comprehensive Maxima package for denesting, see https://github.com/gschintgen/raddenest. 
+
+ For a constant expression involving nested rational powers, the `denest` package attempts to find an un-nested representation. Unlike Maxima's `sqrtdenest` function that handles nested square roots, this function attempts to denest more general expressions, including expressions involving cube roots; for example
  ~~~
 (%i8) 2028*(2*3^(5/2)*%i+35)^(1/3)-(2*3^(5/2)*%i+35)^(2/3)*(8*3^(7/2)*%i-420)+10140$
 
@@ -11,9 +14,8 @@
 (%i10)	denest(sqrt(5^(1/3)-4^(1/3)));
 (%o10)	(-4^(1/3)*20^(2/3)+4*20^(1/3)+2*4^(2/3))/12
  ~~~
- For the square root case, this code calls `sqrtdenest.`
- 
-There is a great deal of literature with algorithms for denesting various classes of radicals, but this package uses a simple approach:
+  
+There is a great deal of literature with algorithms for denesting various classes of radicals, but the `denest` package uses a simple approach:
 
 1. find a polynomial equation with integer coefficients with one solution being the radical, 
 
@@ -62,6 +64,5 @@ For expressions that don't denest or don't contain radicals, `denest` returns th
 (%o15)	cos(x)+1
 ~~~
 
-
-
- 
+To run the test suite, enter `batch(rtest_denest,'test)` to a Maxima prompt. These
+tests include most of testsuite for the `raddenest` package As of 2 May 2022, 35 out of 102 tests fail. 
