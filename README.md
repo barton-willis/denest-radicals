@@ -7,6 +7,9 @@
 
 (%i9) denest(%);
 (%o9) 24336
+
+(%i10)	denest(sqrt(5^(1/3)-4^(1/3)));
+(%o10)	(-4^(1/3)*20^(2/3)+4*20^(1/3)+2*4^(2/3))/12
  ~~~
  For the square root case, this code calls `sqrtdenest.`
  
@@ -20,7 +23,7 @@ There is a great deal of literature with algorithms for denesting various classe
 
 4. return a denested radical when successful. 
 
-When there are denested solutions, Maxima's polynomial solver doesn't always find them. For such cases, this denesting method fails. When this code fails to denest a radical, it does not mean that the radical cannot be denested--it only means that the method isn't sufficiently general to handle the particular case.
+When there are denested solutions, Maxima's polynomial solver doesn't always find them. For such cases, this denesting method fails. When this code fails to denest a radical, it does _not_ mean that the radical cannot be denested--it only means that the method isn't sufficiently general to handle the particular case.
 
 Here is a polynomial that has solutions that are surds, but Maxima's solve function
 finds nested radicals for the solutions:
@@ -47,7 +50,7 @@ To find the solutions explicitly as surds, here is one approach:
 
 # Installation and usage
 
-Copy the files `my_denest.mac` and `rtest_denest.mac` into a directory that is in the Maxima list `file_search_maxima.`  To load the file enter `load(my_denest).` The only user level function in the package is `denest.`  Example:
+Copy the files `my_denest.mac` and `rtest_denest.mac` into a directory that is in the Maxima list `file_search_maxima.`  To load the file, enter `load(my_denest).` The only user level function in the package is `denest.`  Example:
 ~~~
 (%i13)	load(my_denest)$
 (%i14)	denest((6*5^(2/3)+12*5^(1/3)+13)^(1/3));
