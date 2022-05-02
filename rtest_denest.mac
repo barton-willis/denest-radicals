@@ -137,7 +137,10 @@ sqrt(2)+1$
 denest(sqrt(5+2*sqrt(6)));
 sqrt(3)+sqrt(2)$
 
-check_denest(sqrt(sqrt(3)/2+1)/sqrt(11*sqrt(2)-12), -((sqrt(3)+1)/(2^(7/4)-3*2^(5/4))));
+/* The quotient of surds doesn't test as a surd--so set algebraic to true
+   for this test. */
+block([algebraic : true],
+check_denest(sqrt(sqrt(3)/2+1)/sqrt(11*sqrt(2)-12), ((2^(5/4)+3*2^(3/4))*sqrt(3)+2^(5/4)+3*2^(3/4))/28));
 [true, true, true]$
 
 denest((19601-13860*sqrt(2))^(7/4));
@@ -375,6 +378,10 @@ denest((375308427136/390625-(9950503296*sqrt(29))/78125)^(1/8));
 
 (remvalue(e,z,n,d,w,ra),0);
 0$
+
+/* Did we orphan any contexts? */
+contexts;
+[initial,global]$
 
 (kill(check_denest), kill(cfloat_approx_equal),0);
 0$
