@@ -17,19 +17,17 @@
   
 There is a great deal of literature with algorithms for denesting various classes of radicals, but the `denest` package uses a simple approach:
 
-1. find a polynomial equation with integer coefficients with one solution being the radical, 
+1. find a polynomial equation with integer coefficients with one solution being the algebraic number, 
 
 2. solve the polynomial equation, 
 
-3. remove the solutions that do not equal the radical, 
+3. remove the solutions that do not equal the algebraic number, 
 
-4. return a denested radical when successful. 
+4. when successful, return a denested algebraic number. 
 
-When there are denested solutions, Maxima's polynomial solver doesn't always find them. For such cases, this denesting method fails. When this code fails to denest a radical, it does _not_ mean that the radical cannot be denested--it only means that the method isn't sufficiently general to handle the particular case.
+When a polynomial has denested roots, Maxima sometimes expresses them as nested algebraic numbers. For such cases, this package fails to denest the number. Thus when this code fails to denest a radical, it does _not_ mean that the radical cannot be denested--it only means that the method isn't sufficiently general to handle the particular case.
 
-Here is a polynomial that has solutions that are surds, but Maxima's solve function
-finds nested radicals for the solutions:
-
+For example, here is a polynomial that has roots that are surds, but Maxima's solve function finds nested radicals for the roots:
 ~~~
 (%i1)	p : x^4-20*x^3+140*x^2-400*x+376;
 (p)	x^4-20*x^3+140*x^2-400*x+376
