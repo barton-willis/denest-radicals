@@ -157,7 +157,9 @@ denest(e) := scanmap(lambda([q], ratsimp(denest_single_radical(q))), e, 'bottomu
 
 load(pslq_integer_relation);
 
-/* This fails in the complex case--need to fix that. */
+/* This fails in the complex case--need to fix that. The option
+   variables pslq_precision, pslq_threshold, and pslq_depth might need
+   to be set--also what about fpprec ?*/
 denest_pslq_real(e,n) := block([L,listarith : true, sol, rootsconmode : 'all],
    e : rootscontract(expand(e)),
    L : gatherargs(e,"^"),
