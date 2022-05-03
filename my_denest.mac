@@ -157,24 +157,35 @@ denest(e) := scanmap(lambda([q], ratsimp(denest_single_radical(q))), e, 'bottomu
 
 load(pslq_integer_relation);
 
-/* This fails in the complex case--need to fix that. The option
-   variables pslq_precision, pslq_threshold, and pslq_depth might need
+/* The option variables pslq_precision, pslq_threshold, and pslq_depth might need
    to be set--also what about fpprec ?*/
-denest_pslq_real(e,n) := block([L,listarith : true, sol, rootsconmode : 'all],
+
+denest_pslq(e,n) := block([er,ei,ans, rootsconmode : 'all],
+  er : denest_pslq_real(realpart(e^(1/n)), realpart(e), n),
+  ei : if er = false then false else denest_pslq_real(imagpart(e^(1/n)), imagpart(e), n),
+  if er=false or ei=false then (
+     e^(1/n))
+  else (
+     ans : er + %i*ei,
+     if is(equal(rootscontract(expand(ans^n)),e)) then (
+            principalize_root(ans,n))
+     else e^(1/n)));
+
+/* Return an unchecked answer; if no answer, return false */
+denest_pslq_real(ee,e,n) := block([L,listarith : true, sol],
    e : rootscontract(expand(e)),
    L : gatherargs(e,"^"),
    L : sublist(L, lambda([q], ratnump(first(q)) and ratnump(second(q)))),
-   L : map(lambda([s], first(s)^(1/denom(second(s)))),L),
+   L : map(lambda([s], first(abs(s))^(1/denom(second(s)))),L),
    L : unique(L),
    if L = [] then (
-      e^(1/n))
+      ee)
    else (   
       push(1,L),
-      push(-e^(1/n),L),
+      push(-ee,L),
       /* need to catch errors,  I think */
-      sol : pslq_integer_relation(L),   
-      sol : rest(sol) . rest(L) / first(sol),
-      if is(equal(rootscontract(expand(sol^n)),e)) then (
-         principalize_root(sol,n))
-      else e^(1/n)));   
+      sol : pslq_integer_relation(L), 
+      if listp(sol) then (
+         sol : rest(sol) . rest(L) / first(sol))
+      else false));   
   
