@@ -126,10 +126,10 @@ denest_helper(e,n) := block([eq, ee : false, g : gensym(),sol],
    sol : map(lambda([s], principalize_root(s,n)), sol),
    sol : delete(false, sol), 
 
+   /* When no solutions are found, push denest_pslq(e,n) onto the sol. 
+      When denest_pslq(e,n) fails to denest, it returns [e^(1/n)]. */
    if emptyp(sol) then push(denest_pslq(e,n),sol),
-   /* When no solutions are found, push e^(1/n) onto the sol. */
-	if emptyp(sol) then push(e^(1/n), sol),
-
+   
 	/* Sort sol according to the sorting predicate ?complexity and 
       return the first list member. Maybe we should have a specialized
       predicate for sorting? */
