@@ -126,6 +126,7 @@ denest_helper(e,n) := block([eq, ee : false, g : gensym(),sol],
    sol : map(lambda([s], principalize_root(s,n)), sol),
    sol : delete(false, sol), 
 
+   if emptyp(sol) then push(denest_pslq(e,n),sol),
    /* When no solutions are found, push e^(1/n) onto the sol. */
 	if emptyp(sol) then push(e^(1/n), sol),
 
@@ -162,11 +163,13 @@ load(pslq_integer_relation);
 
 load("hypergeometric");
 
-numerically_equal(p,q, digits) := block([float_approx_equal_tolerance : float(1/10^(digits-4))], 
-   p : nfloat(p,[], digits),
-   q : nfloat(q,[], digits),
+/* Return true if the floating point values of both the real and imaginary 
+   parts of p & q test equal within a tolerance of 1/10^digits.*/
+numerically_equal(p,q, digits) := block([float_approx_equal_tolerance : float(1/10^(digits))], 
+   p : nfloat(p,[], digits+8), /* magic number: extra 8 digits */
+   q : nfloat(q,[], digits+8),
    float_approx_equal(realpart(p),realpart(q)) and 
-    float_approx_equal(imagpart(p),imagpart(q)));
+   float_approx_equal(imagpart(p),imagpart(q)));
 
 denest_pslq(e,n) := block([er,ei,ans, rootsconmode : 'all],
   er : denest_pslq_real(realpart(e^(1/n)), realpart(e), n),
