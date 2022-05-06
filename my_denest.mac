@@ -96,14 +96,14 @@ if not ?get('sqrtdenest, '?impl\-name) then load(sqdnst);
    Maybe the setting of solvedecomposes matters?
    */
 
-denest_helper(e,n) := block([eq, ee : false, g : gensym(),sol, ker],
-   /* For the square root case, call sqrtdenest */
-   if n=2 then (
+denest_helper(e,n) := block([eq, ee : false, g : gensym(),sol],
+   /* try sqrtdenest*/
+  
+   if n = 2 then (
       ee : sqrtdenest(sqrt(e))),
 
    if surd_p(ee) then ee
    else (  
-
    /* eq = polynomial with one solution is g = e^(1/n). */
 	eq : first(to_poly(e - g^n,[g,1])),        
 	eq : first(first(elim_allbut(eq, g))),
@@ -155,10 +155,18 @@ denest(e) := scanmap(lambda([q], ratsimp(denest_single_radical(q))), e, 'bottomu
 
 /* experimental and untested. */
 
-load(pslq_integer_relation);
+load(pslq_integer_relation); 
 
 /* The option variables pslq_precision, pslq_threshold, and pslq_depth might need
    to be set--also what about fpprec ?*/
+
+load("hypergeometric");
+
+numerically_equal(p,q, digits) := block([float_approx_equal_tolerance : float(1/10^(digits-4))], 
+   p : nfloat(p,[], digits),
+   q : nfloat(q,[], digits),
+   float_approx_equal(realpart(p),realpart(q)) and 
+    float_approx_equal(imagpart(p),imagpart(q)));
 
 denest_pslq(e,n) := block([er,ei,ans, rootsconmode : 'all],
   er : denest_pslq_real(realpart(e^(1/n)), realpart(e), n),
@@ -167,11 +175,11 @@ denest_pslq(e,n) := block([er,ei,ans, rootsconmode : 'all],
      e^(1/n))
   else (
      ans : er + %i*ei,
-     if is(equal(rootscontract(expand(ans^n)),e)) then (
+     if is(equal(rootscontract(expand(ans^n)),e)) or numerically_equal(ans, e^(1/n), 107) then (
             principalize_root(ans,n))
      else e^(1/n)));
 
-/* Return an unchecked answer; if no answer, return false */
+/* Return an _unchecked_ answer; if no answer, return false */
 denest_pslq_real(ee,e,n) := block([L,listarith : true, sol],
    e : rootscontract(expand(e)),
    L : gatherargs(e,"^"),
