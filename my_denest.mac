@@ -88,7 +88,7 @@ if not ?get('sqrtdenest, '?impl\-name) then load(sqdnst);
       if integerp(k) then demoivre(exp(2*%pi*%i*k/n))*q else false);
 
 check_root(q,n,e) := 
-   is(equal(radcan(rootscontract(expand(q^n))),e)) or numerically_equal(q^n,e);
+   is(equal(rootscontract(expand(q^n)),e)) or numerically_equal(q^n,e,17);
 
 /* To help solve find un-nested solutions, we will precondition the
    equations using algebraic_factor (that also automatically calls 
