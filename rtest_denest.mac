@@ -376,6 +376,19 @@ check_denest((4*245^(1/3)+7*175^(1/3)+35)^(1/3),
 (5217*245^(1/3)+5521*175^(1/3)-16297)/10203);
 [true,true,true]$
 
+/* tests based on 0 = sqrt(max(a,b)) - sqrt(min(a,b)) - sqrt(a+b - 2*sqrt(a*b));*/
+denest(-sqrt(153-2*sqrt(46)*sqrt(107))+sqrt(107)-sqrt(46));
+0$
+
+radcan(denest(-sqrt(2-2*sqrt(5)*sqrt(7)*%i)-sqrt(5)*%i+sqrt(7)));
+0$
+
+denest(sqrt(107)-sqrt(132-10*sqrt(107))-5);
+0$
+
+denest(-sqrt(-10*sqrt(107)*%i-82)-sqrt(107)*%i+5);
+0$
+
 (remvalue(e,z,n,d,w,ra),0);
 0$
 
