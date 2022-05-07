@@ -35,47 +35,14 @@ algebraic_factor(eq,e) := block([g : gensym()],
       eq : subst(first(ek)^(1/denom(second(ek))),g,eq)),
    eq);
 
-/* Return p is a polynomial in the variable x of the form c4*x^4+c2*x^2+c0, where
-   c0,c2, and c4 are free of x. */
-biquadratic_p(p,x) := (
-  p : expand(p),
-  polynomialp(p,[x]) and hipow(p,x) = 4 and coeff(p,x,4) # 0 and coeff(p,x,3) = 0 and coeff(p,x,1) = 0);
-
-/* Return a list of the roots of a biquadratic polynomial c0 + c2*x^2 + x^4. 
-When possible, this function returns the roots as non-nested radicals. 
-Example: solve_biquartic(1,1,x) compared to solve(x^4+x^2+1,x). */   
-
-solve_biquartic(c0,c2,x) := block([a,b],
-  a : radcan((2*sqrt(c0)-c2)/4),
-  b : radcan(-(c2+2*sqrt(c0))/4),
-  /* When a=b, this is still correct, but x=0 is listed twice */
-  [x=sqrt(a)+sqrt(b),x=-sqrt(a)+sqrt(b), x=sqrt(a)-sqrt(b), x=-sqrt(a)-sqrt(b)]);
-
-/* Solve the quartic polynomial p = c0 + c1 x + c2 x^2 + c3 x^3 + c4 x^4 for x, 
-   returning non-nested radical solutions when possible, and otherwise return 
-   the empty list. There are non-nested solutions for both the biquartic case and 
-   when 8*c1*c4^2-4*c2*c3*c4+c3^3 = 0. */
-
-solve_quartic_surd_only(p,x) := block([c0,c1,c2,c3,c4,a,b,c, prederror : false],
-  p : rat(p,x),
-  c4 : ratcoeff(p,x,4),
-  [c0,c1,c2,c3] : map(lambda([k], ratcoeff(p,x,k)/c4), [0,1,2,3]),
-  if (c1=0) and (c3=0) then (
-     solve_biquartic(c0,c2,x))
-  elseif ratsimp(c3^3-4*c2*c3+8*c1)=0 and every('ratnump, [c0,c1,c2,c3]) then (
-     factor(solve(p,x)))
-  else []);    
-
-/* For every factor of e that has degree three or less, solve. Do not attempt to 
-   solve factors that are degree four or more. */
-solve_degree_four_or_less(e,x) := block([algexact : true, solvefactors : true, 
-          solveexplicit : true, dontfactor : [],sol : [],n],
-   e : if mtimesp(e) then args(e) else [e],
-   for ex in e do (
-      n : hipow(ex,x),
-      if n=4 then sol : append(solve_quartic_surd_only(ex,x),sol)
-      elseif n < 4 then sol : append(solve(ex,x), sol)),
-   sol);   
+/* Solve e for x with:
+   (1) algexact : true 
+   (2) solveexplicit : true. 
+   (3) solvedecomposes : true
+*/
+solve_special_environment(e,x) := block([algexact : true, solveexplicit : true, 
+  solvedecomposes : true],  
+   solve(e,x));
 
 /* The sqrtdenest function isn't in core for some Maxima versions, so conditionally 
    load sqdnst. I don't know a way to test this using user level functions.*/
@@ -88,16 +55,10 @@ if not ?get('sqrtdenest, '?impl\-name) then load(sqdnst);
       if integerp(k) then demoivre(exp(2*%pi*%i*k/n))*q else false);
 
 check_root(q,n,e) := 
-   is(equal(rootscontract(expand(q^n)),e)) or numerically_equal(q^n,e,17);
+   is(equal(rootscontract(expand(q^n)),e)) or numerically_equal(q^n,e,107);
 
 /* To help solve find un-nested solutions, we will precondition the
-   equations using algebraic_factor (that also automatically calls 
-   gfactor). The function solve_degree_three_factors declines to 
-   attempt to solve any factor of degree four or greater. Possibly
-   restricing solve this way misses some de-nestings. 
-   
-   Maybe the setting of solvedecomposes matters?
-   */
+   equations using algebraic_factor (that also automatically calls gfactor). */
 
 denest_helper(e,n) := block([eq, ee : false, g : gensym(),sol],
    /* try sqrtdenest*/
@@ -111,9 +72,9 @@ denest_helper(e,n) := block([eq, ee : false, g : gensym(),sol],
 	eq : first(to_poly(e - g^n,[g,1])),        
 	eq : first(first(elim_allbut(eq, g))),
 	/* Solve eq for g. We hope that solve returns non-nested radicals when possible.*/ 
-    eq : algebraic_factor(eq,e),
-    sol : solve_degree_four_or_less(eq, g),
-	 sol : map(lambda([s], block([algebraic : true], ratsimp(s))), sol),
+   eq : algebraic_factor(eq,e),
+   sol : solve_special_environment(eq,g),
+   sol : map(lambda([s], block([algebraic : true], ratsimp(s))), sol),
 
    /* Build the list of solutions [aaa,bbb, ...] instead of [g = aaa, g = bbb, ...]. 
 	   Also, remove redundant solutions. */
