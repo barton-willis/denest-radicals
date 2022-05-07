@@ -37,7 +37,7 @@ algebraic_factor(eq,e) := block([g : gensym()],
 
 /* Solve e for x with:
    (1) algexact : true 
-   (2) solveexplicit : true. 
+   (2) solveexplicit : true 
    (3) solvedecomposes : true
 */
 solve_special_environment(e,x) := block([algexact : true, solveexplicit : true, 
@@ -54,8 +54,9 @@ if not ?get('sqrtdenest, '?impl\-name) then load(sqdnst);
       k : floor(1/2 - n*carg(q)/(2*%pi)),
       if integerp(k) then demoivre(exp(2*%pi*%i*k/n))*q else false);
 
-check_root(q,n,e) := 
-   is(equal(rootscontract(expand(q^n)),e)) or numerically_equal(q^n,e,107);
+/* Check that q^n = e. experimentaly, we'll allow a numerical test.*/
+check_root(q,n,e) := block([rootsconmode : true],
+   is(equal(rootscontract(expand(q^n)),e)) or numerically_equal(q^n,e,107));
 
 /* To help solve find un-nested solutions, we will precondition the
    equations using algebraic_factor (that also automatically calls gfactor). */
