@@ -87,6 +87,9 @@ if not ?get('sqrtdenest, '?impl\-name) then load(sqdnst);
       k : floor(1/2 - n*carg(q)/(2*%pi)),
       if integerp(k) then demoivre(exp(2*%pi*%i*k/n))*q else false);
 
+check_root(q,n,e) := 
+   is(equal(radcan(rootscontract(expand(q^n))),e)) or numerically_equal(q^n,e);
+
 /* To help solve find un-nested solutions, we will precondition the
    equations using algebraic_factor (that also automatically calls 
    gfactor). The function solve_degree_three_factors declines to 
@@ -120,7 +123,7 @@ denest_helper(e,n) := block([eq, ee : false, g : gensym(),sol],
 	sol : sublist(sol, lambda([q], complex_number_p(q) or surd_p(q))), 
    
    /* Remove spurious roots */
-   sol : sublist(sol, lambda([q], is(equal(radcan(rootscontract(expand(q^n))),e)))),
+   sol : sublist(sol, lambda([q], check_root(q,n,e))),
 	/* Convert non-spurious roots to the principal root. Spurious roots
       are converted to false, so delete false from the result of mapping. */
    sol : map(lambda([s], principalize_root(s,n)), sol),

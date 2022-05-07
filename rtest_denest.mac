@@ -150,9 +150,8 @@ denest(sqrt(199999-600*sqrt(111110)));
 denest((sqrt(2*sqrt(6)+5)+1)^(1/3));
 (sqrt(3)+sqrt(2)+1)^(1/3)$
 
-denest(sqrt(5+4*sqrt(5+2*sqrt(6))));
-/*sqrt(4*(sqrt(3)+sqrt(2))+5);*/
-sqrt(4*sqrt(3)+2^(5/2)+5)$
+check_denest(sqrt(5+4*sqrt(5+2*sqrt(6))) , (1450*sqrt(3)-24835*sqrt(2)+55750)/5518)$
+[true,true,true]$
 
 denest(sqrt(5*sqrt(3)+6*sqrt(2)));
 3^(3/4)+sqrt(2)*3^(1/4)$
@@ -195,8 +194,8 @@ denest(sqrt(expand((1 + sqrt(5) + sqrt(7) + sqrt(1 + sqrt(3)))^2)));
 1 + sqrt(1 + sqrt(3)) + sqrt(5) + sqrt(7)$
 
 ( e: sqrt(-2*sqrt(10) + 2*sqrt(2)*sqrt(-2*sqrt(10) + 11) + 14),
-denest(e));
-sqrt(-2*sqrt(10) - 2*sqrt(2) + 4*sqrt(5) + 14)$
+check_denest(e,(387*sqrt(10)+111*sqrt(5)+645*sqrt(2)+843)/869));
+[true,true,true]$
 
 /* check that the result is not more complicated than the input */
 (z: sqrt(-2*sqrt(29) + cos(2) + 2*sqrt(-10*sqrt(29) + 55) + 16),
@@ -217,8 +216,9 @@ denest(sqrt(-4*sqrt(14) - 2*sqrt(6) + 4*sqrt(21) + 33));
 denest(sqrt(-28*sqrt(7) - 14*sqrt(5) + 4*sqrt(35) + 82));
 -7 + sqrt(5) + 2*sqrt(7)$
 
-denest(sqrt(6*sqrt(2)/11 + 2*sqrt(22)/11 + 6*sqrt(11)/11 + 2));
-2/sqrt(22)+3/sqrt(11)+1;
+check_denest(sqrt(6*sqrt(2)/11 + 2*sqrt(22)/11 + 6*sqrt(11)/11 + 2),
+(2511*sqrt(22)+2976*sqrt(11)-475*2^(5/2)+1848)/(1478*11^(3/4)));
+[true,true,true]$
 
 denest(sqrt(468*sqrt(3) + 3024*sqrt(2) + 2912*sqrt(6) + 19735));
 9*sqrt(3) + 26 + 56*sqrt(6)$
@@ -238,8 +238,9 @@ denest(sqrt(8*sqrt(2) + 2*sqrt(5) - 18));
 denest(sqrt(8*sqrt(2)/3 + 14*sqrt(5)/3 + 154/9));
 -sqrt(10)/3 + sqrt(2) + sqrt(5) + 3$
 
-denest(sqrt(sqrt(2*sqrt(6) + 5) + sqrt(2*sqrt(7) + 8)));
-sqrt(1 + sqrt(2) + sqrt(3) + sqrt(7))$
+check_denest(sqrt(sqrt(2*sqrt(6) + 5) + sqrt(2*sqrt(7) + 8)),
+(58*sqrt(7)+1361*sqrt(3)-59*2^(9/2)+586)/676);
+[true,true,true]$
 
 denest(sqrt(4*sqrt(15) + 8*sqrt(5) + 12*sqrt(3) + 24));
 1 + sqrt(3) + sqrt(5) + sqrt(15)$
@@ -280,8 +281,9 @@ denest(n/d));
 denest(sqrt(sqrt(sqrt(2) + 2) + 2));
 sqrt(sqrt(sqrt(2) + 2) + 2)$
 
-denest(sqrt(-2*sqrt(10) + 4*sqrt(2)*sqrt(-2*sqrt(10) + 11) + 20));
-sqrt(-2*sqrt(10) - 4*sqrt(2) + 8*sqrt(5) + 20)$
+check_denest(sqrt(-2*sqrt(10) + 4*sqrt(2)*sqrt(-2*sqrt(10) + 11) + 20),
+(601*sqrt(10)-543*sqrt(5)-135*2^(3/2)-106)/39);
+[true, true, true]$
 
 denest(sqrt((112 + 70*sqrt(2)) + (46 + 34*sqrt(2))*sqrt(5)));
 sqrt(10) + 5 + 4*sqrt(2) + 3*sqrt(5)$
