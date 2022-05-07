@@ -92,11 +92,8 @@ denest_helper(e,n) := block([eq, ee : false, g : gensym(),sol],
    /* When no solutions are found, push denest_pslq(e,n) onto the sol. 
       When denest_pslq(e,n) fails to denest, it returns [e^(1/n)]. */
    if emptyp(sol) then push(denest_pslq(e,n),sol),
-   
-	/* Sort sol according to the sorting predicate ?complexity and 
-      return the first list member. Maybe we should have a specialized
-      predicate for sorting? */
-    first(sort(sol, lambda([a,b], ?complexity(a) < ?complexity(b))))));
+   /* Return the first member of sol. */
+    first(sol)));
 
 /* Return true iff e is a complex number whose real and imaginary parts are
    rational numbers.*/
