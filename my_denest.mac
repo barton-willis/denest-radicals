@@ -74,7 +74,6 @@ denest_helper(e,n) := block([eq, ee : false, g : gensym(),sol],
 	/* Solve eq for g. We hope that solve returns non-nested radicals when possible.*/ 
    eq : algebraic_factor(eq,e),
    sol : solve_special_environment(eq,g),
-   sol : map(lambda([s], block([algebraic : true], ratsimp(s))), sol),
 
    /* Build the list of solutions [aaa,bbb, ...] instead of [g = aaa, g = bbb, ...]. 
 	   Also, remove redundant solutions. */
