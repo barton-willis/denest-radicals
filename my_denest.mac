@@ -54,8 +54,9 @@ if not ?get('sqrtdenest, '?impl\-name) then load(sqdnst);
       k : floor(1/2 - n*carg(q)/(2*%pi)),
       if integerp(k) then demoivre(exp(2*%pi*%i*k/n))*q else false);
 
-/* Check that q^n = e. experimentaly, we'll allow a numerical test.*/
-check_root(q,n,e) := block([rootsconmode : true],
+/* Check that q^n = e. experimentaly, we'll allow a numerical test.
+   The numerical test uses 107 digits--it's a magic number with no real reason.*/
+check_root(q,n,e) := block([rootsconmode : 'all],
    is(equal(rootscontract(expand(q^n)),e)) or numerically_equal(q^n,e,107));
 
 /* To help solve find un-nested solutions, we will precondition the
