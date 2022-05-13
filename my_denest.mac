@@ -38,10 +38,9 @@ algebraic_factor(eq,e) := block([g : gensym()],
 /* Solve e for x with:
    (1) algexact : true 
    (2) solveexplicit : true 
-   (3) solvedecomposes : true
-*/
-solve_special_environment(e,x) := block([algexact : true, solveexplicit : true, 
-  solvedecomposes : true],  
+   (3) solvedecomposes : true*/
+
+solve_special_environment(e,x) := block([algexact : true, solveexplicit : true, solvedecomposes : true], 
    solve(e,x));
 
 /* The sqrtdenest function isn't in core for some Maxima versions, so conditionally 
@@ -63,8 +62,7 @@ check_root(q,n,e) := block([rootsconmode : 'all],
    equations using algebraic_factor (that also automatically calls gfactor). */
 
 denest_helper(e,n) := block([eq, ee : false, g : gensym(),sol],
-   /* try sqrtdenest*/
-  
+   /* try sqrtdenest*/  
    if n = 2 then (
       ee : sqrtdenest(sqrt(e))),
 
@@ -81,7 +79,7 @@ denest_helper(e,n) := block([eq, ee : false, g : gensym(),sol],
 	   Also, remove redundant solutions. */
 	sol : map(lambda([solk], subst(solk,g)), unique(sol)),
    
-	/* Remove solutions that are not complex numbers or surds */
+	/* Remove solutions that are not complex numbers or surds. */
 	sol : sublist(sol, lambda([q], complex_number_p(q) or surd_p(q))), 
    
    /* Remove spurious roots */
@@ -90,7 +88,6 @@ denest_helper(e,n) := block([eq, ee : false, g : gensym(),sol],
       are converted to false, so delete false from the result of mapping. */
    sol : map(lambda([s], principalize_root(s,n)), sol),
    sol : delete(false, sol), 
-
    /* When no solutions are found, push denest_pslq(e,n) onto the sol. 
       When denest_pslq(e,n) fails to denest, it returns [e^(1/n)]. */
    if emptyp(sol) then push(denest_pslq(e,n),sol),
@@ -160,5 +157,4 @@ denest_pslq_real(ee,e,n) := block([L,listarith : true, sol],
       sol : pslq_integer_relation(L), 
       if listp(sol) then (
          sol : rest(sol) . rest(L) / first(sol))
-      else false));   
-  
+      else false));  
