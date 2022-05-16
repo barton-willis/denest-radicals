@@ -40,7 +40,8 @@ algebraic_factor(eq,e) := block([g : gensym()],
    (2) solveexplicit : true 
    (3) solvedecomposes : true*/
 
-solve_special_environment(e,x) := block([algexact : true, solveexplicit : true, solvedecomposes : true], 
+solve_special_environment(e,x) := block([algexact : true, solveexplicit : true, 
+   solvedecomposes : true], 
    solve(e,x));
 
 /* The sqrtdenest function isn't in core for some Maxima versions, so conditionally 
@@ -53,7 +54,7 @@ if not ?get('sqrtdenest, '?impl\-name) then load(sqdnst);
       k : floor(1/2 - n*carg(q)/(2*%pi)),
       if integerp(k) then demoivre(exp(2*%pi*%i*k/n))*q else false);
 
-/* Check that q^n = e. experimentaly, we'll allow a numerical test.
+/* Check that q^n = e. Experimentally, we'll allow a numerical test.
    The numerical test uses 107 digits--it's a magic number with no real reason.*/
 check_root(q,n,e) := block([rootsconmode : 'all],
    is(equal(rootscontract(expand(q^n)),e)) or numerically_equal(q^n,e,107));
@@ -74,7 +75,6 @@ denest_helper(e,n) := block([eq, ee : false, g : gensym(),sol],
 	/* Solve eq for g. We hope that solve returns non-nested radicals when possible.*/ 
    eq : algebraic_factor(eq,e),
    sol : solve_special_environment(eq,g),
-
    /* Build the list of solutions [aaa,bbb, ...] instead of [g = aaa, g = bbb, ...]. 
 	   Also, remove redundant solutions. */
 	sol : map(lambda([solk], subst(solk,g)), unique(sol)),
